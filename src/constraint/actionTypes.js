@@ -1,0 +1,4 @@
+export const FETCH_SOLIDITY = "FETCH_SOLIDITY"
+export const END_LOADING = "END_LOADING"
+export const START_LOADING = "START_LOADING"
+export const CONNECT_ACC = "CONNECT_ACC"
