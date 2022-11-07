@@ -13,13 +13,14 @@ import { FETCH_SOLIDITY } from "./constraint/actionTypes";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import "./App.css";
+
 const App = () => {
   const dispatch = useDispatch();
 
   // MetaMask Login/Connect
 
   useEffect(() => {
-    
     web3Handler();
   }, []);
   const web3Handler = async () => {
@@ -65,7 +66,7 @@ const App = () => {
         <Box sx={{ flex: 1 }}>
           <Grid container>
             <Grid md={12}>
-              <Appbar web3Handler={web3Handler}/>
+              <Appbar web3Handler={web3Handler} />
             </Grid>
             <Grid md={12}>
               <Switch>
