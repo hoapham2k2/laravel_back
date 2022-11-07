@@ -14,6 +14,7 @@ import { FETCH_SOLIDITY } from "./constraint/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
+import Auction from "./pages/Auction";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const App = () => {
             <Grid md={12}>
               <Switch>
                 <Route path="/create_nft" exact component={create_nft} />
+                <Route path="/auction" exact component={Auction} />
               </Switch>
             </Grid>
           </Grid>
