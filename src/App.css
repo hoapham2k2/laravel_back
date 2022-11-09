@@ -1,22 +1,42 @@
 
 
-#fade_out {
-  position: relative;
-  height: 400px;
-  z-index: 1;
+.slideshow {
+  margin: 0 auto;
+  overflow: hidden;
+  width: 100%;
 }
 
-#fade_out img {
-  position: absolute;
+.slideshowSlider {
+  white-space: nowrap;
+  transition: ease 1000ms;
+}
+
+.slide {
+  display: inline-block;
+
+  border-radius: 40px;
   height: 400px;
   width: 100%;
-  padding: 16px 50px;
-  left: 0;
-  -webkit-transition: opacity 1s ease-in;
-  -moz-transition: opacity 1s ease-in;
-  transition: opacity 1s ease-in;
 }
 
-#fade_out img.top:hover {
-  opacity: 0;
+/* Buttons */
+
+.slideshowDots {
+  text-align: center;
+}
+
+.slideshowDot {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+
+  cursor: pointer;
+  margin: 15px 7px 0px;
+
+  background-color: #c4c4c4;
+}
+
+.slideshowDot.active {
+  background-color: #6a0dad;
 }

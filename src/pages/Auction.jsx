@@ -1,5 +1,5 @@
 import { Box, Typography, TextField, Button } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import img1 from "../assets/img/img1.png";
 import img2 from "../assets/img/img2.png";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -8,32 +8,79 @@ import { bgcolor } from "@mui/system";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAuctionById } from "../actions/auction";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export default function Auction() {
   const { nft_id } = useParams();
   const [displayImg1, setDisplayImg1] = useState(true);
 
   const { currCampaign } = useSelector((state) => state.campaign);
+  const colors = [currCampaign?.img1_url, currCampaign?.img2_url];
+  const delay = 3000;
+  const [index, setIndex] = useState(0);
+  const timeoutRef = useRef(null);
 
+  function resetTimeout() {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAuctionById(nft_id));
-  }, [nft_id]);
+    resetTimeout();
+    timeoutRef.current = setTimeout(
+      () =>
+        setIndex((prevIndex) =>
+          prevIndex === colors.length - 1 ? 0 : prevIndex + 1
+        ),
+      delay
+    );
+
+    return () => {
+      resetTimeout();
+    };
+  }, [nft_id, index]);
 
   if (!currCampaign) return null;
 
   return (
-    <Box >
-     
-      
-      
+    <Box sx={{padding: '16px 50px', height: '100%'}}>
+      <Box className="slideshow" sx={{ display: "flex",
+      flexDirection:'column',
+          zIndex: 1,
+          justifyContent: "space-between",
+          flex: 1,}} >
+        <Box
+          className="slideshowSlider"
+          style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
+        >
+          {colors.map((img, index) => (
+            <img className="slide" key={index} src={img} />
+          ))}
+        </Box>
+
+        <Box className="slideshowDots">
+          {colors.map((_, idx) => (
+            <Box
+              key={idx}
+              className={`slideshowDot${index === idx ? " active" : ""}`}
+              onClick={() => {
+                setIndex(idx);
+              }}
+            ></Box>
+          ))}
+        </Box>
+      </Box>
+
       <Box
         sx={{
-            display: "flex",
+          display: "flex",
           zIndex: 2,
           justifyContent: "space-between",
           flex: 1,
-
-        }}
+        }} 
       >
         <img
           src={img2}
@@ -44,7 +91,6 @@ export default function Auction() {
             flex: 1,
           }}
           alt=""
-          srcset=""
         />
 
         <Box

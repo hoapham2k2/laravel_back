@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { Grid, Box } from "@material-ui/core";
+import { Grid, Box, Container } from "@material-ui/core";
 import { ethers } from "ethers";
 import MarketplaceAbi from "./utils/contractsData/Marketplace.json";
 import MarketplaceAddress from "./utils/contractsData/Marketplace-address.json";
@@ -63,24 +63,25 @@ const App = () => {
           className="right_box"
           sx={{
             flex:1,
-            height: "100%",
+            minHeight: "100%",
             display: "flex",
             flexDirection: "column",
+            bgcolor: "#f5f5f5"
           }}
         >
           {/* the appbar  */}
           <Appbar web3Handler={web3Handler} />
           {/* the body before appbar */}
-          <Box
+          <Container maxWidth="xl"
             className="pages_box"
-            sx={{ bgcolor: "#f5f5f5", width: "100%", height: "100%" }}
+            style={{backgroundColor:"#f5f5f5"}}
           >
             <Switch>
               <Route path="/create_nft" exact component={create_nft} />
               <Route path="/auction/:nft_id" exact component={Auction} />
               <Route path="/" exact component={Home} />
             </Switch>
-          </Box>
+          </Container>
         </Box>
       </Box>
     </BrowserRouter>
