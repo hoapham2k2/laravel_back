@@ -1,39 +1,36 @@
 import {
   FETCH_SOLIDITY,
-  START_LOADING,
-  END_LOADING,
-  CONNECT_ACC
+  START_LOADING_SOLIDITY,
+  CONNECT_ACC,
 } from "../constraint/actionTypes";
 
 const initState = {
   account: null,
   nftContract: null,
   marketplaceContract: null,
+  nftList: [],
   isLoading: false,
 };
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case START_LOADING: {
+    case START_LOADING_SOLIDITY: {
       return { ...state, isLoading: true };
-    }
-    case END_LOADING: {
-      return { ...state, isLoading: false };
     }
     case FETCH_SOLIDITY:
       return {
         ...state,
-        account: action.payload.account,
         nftContract: action.payload.nftContract,
         marketplaceContract: action.payload.marketplaceContract,
+        nftList: action.payload.nftList,
+        isLoading: false
       };
     case CONNECT_ACC:
       return {
         ...state,
-        account: action.payload.account
+        account: action.payload.account,
       };
-   
-
+    
     default:
       return state;
   }

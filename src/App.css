@@ -1,3 +1,22 @@
-html, body{
-    height: 100%
-  }
+
+
+#fade_out {
+  position: relative;
+  height: 400px;
+  z-index: 1;
+}
+
+#fade_out img {
+  position: absolute;
+  height: 400px;
+  width: 100%;
+  padding: 16px 50px;
+  left: 0;
+  -webkit-transition: opacity 1s ease-in;
+  -moz-transition: opacity 1s ease-in;
+  transition: opacity 1s ease-in;
+}
+
+#fade_out img.top:hover {
+  opacity: 0;
+}

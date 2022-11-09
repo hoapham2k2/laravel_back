@@ -2,7 +2,7 @@ import { Box, Card } from "@material-ui/core";
 import * as React from "react";
 import { DropzoneArea } from "react-mui-dropzone";
 
-export default function DropButton() {
+export default function DropButton({ setImage }) {
   return (
     <Box
       sx={{
@@ -13,7 +13,10 @@ export default function DropButton() {
       <DropzoneArea
         acceptedFiles={["image/*"]}
         dropzoneText={"Drag and drop an image here or click"}
-        onChange={(files) => console.log("Files:", files)}
+        onChange={(files) => {
+          console.log("Files:", files[0]);
+          setImage(files[0])
+        }}
         onAlert={(message, variant) => console.log(`${variant}: ${message}`)}
         filesLimit={1}
         showPreviews={true}
