@@ -38,8 +38,8 @@ const NFTItem = () => {
     <Card sx={{ width: "100%" }}>
       <Box
         sx={{
-          width: "100%",
-          height: "200px",
+          flex: 1,
+          height: "190px",
           overflow: "hidden",
           display: "flex",
           alignItems: "center",
@@ -71,13 +71,19 @@ const NFTItem = () => {
 const NFTList = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+        }}
+      >
         <Typography variant="h4">NFT</Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>
           See more...
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", gap: "16px" }}>
+      <Box sx={{ display: "flex", gap: "14px" }}>
         <NFTItem />
         <NFTItem />
         <NFTItem />
@@ -136,7 +142,7 @@ export const Home = () => {
               height: "100%",
               bgcolor: "#fff",
               borderRadius: "10px",
-              padding: "30px",
+              padding: "20px",
               display: "flex",
               justifyContent: "center",
             }}
