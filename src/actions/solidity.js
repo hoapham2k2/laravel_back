@@ -41,18 +41,22 @@ export const fetchSolidity = (accounts)  => async (dispatch) => {
       // get total price of item (item price + fee)
       // console.log(metadata);
       const thisNft = await marketplace.items(item.itemId)
-      // const startPrice = ethers.utils.formatEther(thisNft.startPrice)+'ETH'
+      const startPrice = ethers.utils.formatEther(thisNft.startPrice)
       // Add item to items array
-      console.log(item)
       items.push({
+        startPrice,
         id: item.itemId.toNumber(),
         seller: item.seller,
         name: metadata.name,
         description: metadata.description,
         image: metadata.image,
+        isSold: item.isSold,
+        isStarted: item.isStarted,
+        endAt: item.endAt.toNumber(),
+        highestBid: item.highestBid.toNumber(),
       }); 
-    }
-  }
+    } 
+  } 
 
   dispatch({
     type: FETCH_SOLIDITY,

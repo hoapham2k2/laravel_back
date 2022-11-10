@@ -1,7 +1,5 @@
 import { Box, Typography, TextField, Button } from "@material-ui/core";
 import React, { useState, useEffect, useRef } from "react";
-import img1 from "../assets/img/img1.png";
-import img2 from "../assets/img/img2.png";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { bgcolor } from "@mui/system";
@@ -11,13 +9,26 @@ import { getAuctionById } from "../actions/auction";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { toBase64, toWei, fromWei } from "../utils";
+import DateCountdown from "react-date-countdown-timer";
 export default function Auction() {
+  const [price, setPrice] = useState(0);
+  const [isDisplay, setIsDisplay] = useState(false);
   const { nft_id } = useParams();
-  const [displayImg1, setDisplayImg1] = useState(true);
-
   const { currCampaign } = useSelector((state) => state.campaign);
+
+  const { nftList, marketplaceContract } = useSelector(
+    (state) => state.solidity
+  );
+
+  const nft = nftList.filter((nft) => nft.id == nft_id)[0];
+  let endAt;
+  if (nft) {
+    endAt = new Date(nft.endAt * 1000);
+  }
+
   const colors = [currCampaign?.img1_url, currCampaign?.img2_url];
-  const delay = 3000;
+  const delay = 7000;
   const [index, setIndex] = useState(0);
   const timeoutRef = useRef(null);
 
@@ -29,6 +40,8 @@ export default function Auction() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAuctionById(nft_id));
+  }, [nft_id]);
+  useEffect(() => {
     resetTimeout();
     timeoutRef.current = setTimeout(
       () =>
@@ -41,17 +54,36 @@ export default function Auction() {
     return () => {
       resetTimeout();
     };
-  }, [nft_id, index]);
+  }, [index]);
+  const handleOffer = (e) => {
+    setIsDisplay(!isDisplay);
+  };
 
+  const bid = async (e) => {
+    if (isDisplay) {
+      // if (price < nft.startPrice) {
+      //   alert("price less than current price");
+      //   return;
+      // }
+      await (
+        await marketplaceContract.bid(nft_id, { value: toWei(price) })
+      ).wait(); 
+    }
+  };
   if (!currCampaign) return null;
 
   return (
-    <Box sx={{padding: '16px 50px', height: '100%'}}>
-      <Box className="slideshow" sx={{ display: "flex",
-      flexDirection:'column',
+    <Box sx={{ padding: "16px 50px", height: "100%" }}>
+      <Box
+        className="slideshow"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
           zIndex: 1,
           justifyContent: "space-between",
-          flex: 1,}} >
+          flex: 1,
+        }}
+      >
         <Box
           className="slideshowSlider"
           style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
@@ -80,24 +112,30 @@ export default function Auction() {
           zIndex: 2,
           justifyContent: "space-between",
           flex: 1,
-        }} 
+          position: "relative",
+        }}
       >
-        <img
-          src={img2}
-          style={{
-            maxWidth: "21%",
-            height: "auto",
-            marginLeft: "10%",
-            flex: 1,
-          }}
-          alt=""
-        />
+        {nft && (
+          <img
+            src={`data:image/png;base64,${toBase64(nft?.image?.buffer?.data)}`}
+            style={{
+              maxWidth: "21%",
+              height: "300px",
+              borderRadius: "13px",
+              flex: 1,
+              position: "absolute",
+              top: "-85px",
+              left: "70px",
+            }}
+            alt=""
+          />
+        )}
 
         <Box
           sx={{
             display: "flex",
-            marginTop: "10%",
-            // marginLeft: "300px",
+            marginTop: "15px",
+            marginLeft: "350px",
             flex: 2,
             padding: "0px 30px",
             flexDirection: "column",
@@ -107,8 +145,11 @@ export default function Auction() {
             {currCampaign.title}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Remaining Time ( End at)
+            Remaining Time
           </Typography>
+          {endAt && (
+            <DateCountdown dateTo={endAt} callback={() => alert("Time out")} />
+          )}
           <Box
             sx={{
               padding: "8px 16px",
@@ -119,7 +160,9 @@ export default function Auction() {
               marginBottom: "8px",
             }}
           >
-            <Typography variant="h5">Current Value</Typography>
+            <Typography variant="h5">{`${
+              nft?.highestBid ? fromWei(nft?.highestBid) : nft?.startPrice
+            } ETH`}</Typography>
           </Box>
           <Typography variant="subtitle1" gutterBottom>
             Description
@@ -128,19 +171,43 @@ export default function Auction() {
             {currCampaign.desc}
           </Typography>
         </Box>
-        <Box sx={{ flex: 1, display: "flex", alignItems: "center" }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <Button
             style={{
               borderRadius: 35,
               backgroundColor: "#21b6ae",
               padding: "18px 36px",
               fontSize: "18px",
+              marginBottom: "20px",
             }}
             variant="contained"
             size="large"
+            onClick={handleOffer}
           >
             Make Offer
           </Button>
+          {isDisplay && (
+            <>
+              <TextField
+                type="number"
+                name="price"
+                variant="standard"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                inputProps={{
+                  step: "0.0001",
+                }}
+              />
+              <Button onClick={bid}>Offer</Button>
+            </>
+          )}
         </Box>
       </Box>
     </Box>

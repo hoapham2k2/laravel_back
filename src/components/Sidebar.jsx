@@ -27,7 +27,7 @@ const drawerWidth = 200;
 export default function MySidebar() {
   const history = useHistory()
   const location = useLocation();
-  const pathname = location.pathname.split('/')[2]
+  const pathname = location.pathname.split('/')[1]
   console.log(pathname)
 
   const backLink = {backgroundColor: 'rgb(0, 221, 162)', color: 'white', "&:hover": {
@@ -93,7 +93,7 @@ export default function MySidebar() {
               </ListItem>
 
               <ListItem disablePadding>
-                <ListItemButton onClick={()=>{history.push('/history')}} sx={pathname == 'campaign' ? backLink : {}}>
+                <ListItemButton onClick={()=>{history.push('/history')}} sx={pathname == 'history' ? backLink : {}}>
                   <ListItemIcon>
                     <ReceiptLongIcon />
                   </ListItemIcon>
@@ -111,7 +111,7 @@ export default function MySidebar() {
               </ListItem>
 
               <ListItem disablePadding>
-                <ListItemButton onClick={()=>{history.push('/create_nft')}} sx={pathname == 'auction' ? backLink : {}}>
+                <ListItemButton onClick={()=>{history.push('/create_nft')}} sx={pathname == 'create_nft' ? backLink : {}}>
                   <ListItemIcon>
                     <CloudUploadIcon />
                   </ListItemIcon>
