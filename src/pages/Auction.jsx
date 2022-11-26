@@ -1,5 +1,11 @@
-import { Box, Typography, TextField, Button } from "@material-ui/core";
-import React, { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+} from "@material-ui/core";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { bgcolor } from "@mui/system";
@@ -15,32 +21,49 @@ export default function Auction() {
   const [price, setPrice] = useState(0);
   const [isDisplay, setIsDisplay] = useState(false);
   const { nft_id } = useParams();
-  const { currCampaign } = useSelector((state) => state.campaign);
+  const { currAuction } = useSelector((state) => state.auction);
 
-  const { nftList, marketplaceContract } = useSelector(
+  const { nftList, marketplaceContract, isLoading } = useSelector(
     (state) => state.solidity
   );
 
   const nft = nftList.filter((nft) => nft.id == nft_id)[0];
+
   let endAt;
   if (nft) {
     endAt = new Date(nft.endAt * 1000);
   }
+  console.log(nft)
 
-  const colors = [currCampaign?.img1_url, currCampaign?.img2_url];
+  const colors = [currAuction?.img1_url, currAuction?.img2_url];
   const delay = 7000;
   const [index, setIndex] = useState(0);
   const timeoutRef = useRef(null);
+  const date = new Date(Date.now());
 
   function resetTimeout() {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   }
+  // const endAuc = async () => {
+  //   if (date > endAt && nft.isStarted == true) {
+  //     // window.location.reload();
+  //     if (nft.isStarted == true) {
+  //       console.log(1);
+  //       await (await marketplaceContract.endAuction(nft.id)).wait();
+  //     }
+  //   }
+  // };
+  // const a = useMemo(()=>{endAuc()}, [nft])
+  // if(nft) {
+  //   a
+  // }
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAuctionById(nft_id));
   }, [nft_id]);
+
   useEffect(() => {
     resetTimeout();
     timeoutRef.current = setTimeout(
@@ -55,8 +78,11 @@ export default function Auction() {
       resetTimeout();
     };
   }, [index]);
+
+ 
+
   const handleOffer = (e) => {
-    setIsDisplay(!isDisplay);
+    setIsDisplay(!isDisplay); 
   };
 
   const bid = async (e) => {
@@ -67,12 +93,15 @@ export default function Auction() {
       // }
       await (
         await marketplaceContract.bid(nft_id, { value: toWei(price) })
-      ).wait(); 
+      ).wait();
     }
   };
-  if (!currCampaign) return null;
 
-  return (
+  if (!currAuction) return null;
+
+  return (isLoading ? (
+    <CircularProgress />
+  ) : (
     <Box sx={{ padding: "16px 50px", height: "100%" }}>
       <Box
         className="slideshow"
@@ -142,13 +171,18 @@ export default function Auction() {
           }}
         >
           <Typography variant="h3" gutterBottom>
-            {currCampaign.title}
+            {currAuction.title}
           </Typography>
           <Typography variant="body1" gutterBottom>
             Remaining Time
           </Typography>
           {endAt && (
-            <DateCountdown dateTo={endAt} callback={() => alert("Time out")} />
+            <DateCountdown
+              dateTo={endAt}
+              callback={() => {
+                alert("Time out");
+              }}
+            />
           )}
           <Box
             sx={{
@@ -161,14 +195,14 @@ export default function Auction() {
             }}
           >
             <Typography variant="h5">{`${
-              nft?.highestBid ? fromWei(nft?.highestBid) : nft?.startPrice
+              nft?.highestBid 
             } ETH`}</Typography>
           </Box>
           <Typography variant="subtitle1" gutterBottom>
             Description
           </Typography>
           <Typography align="justify" paragraph>
-            {currCampaign.desc}
+            {currAuction.desc}
           </Typography>
         </Box>
         <Box
@@ -210,6 +244,6 @@ export default function Auction() {
           )}
         </Box>
       </Box>
-    </Box>
+    </Box>)
   );
 }

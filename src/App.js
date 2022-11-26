@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {fetchSolidity} from './actions/solidity'
 import "./App.css";
 import Auction from "./pages/Auction";
+import Your_NFT from "./pages/Your_NFT";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -79,6 +80,7 @@ const App = () => {
             <Switch>
               <Route path="/create_nft" exact component={create_nft} />
               <Route path="/auction/:nft_id" exact component={Auction} />
+              <Route path="/list_nft" exact component={Your_NFT} />
               <Route path="/" exact component={Home} />
             </Switch>
           </Container>
