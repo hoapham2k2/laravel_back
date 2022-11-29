@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\AuctionController;
+use App\Http\Controllers\TransactionController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +18,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::post('/camp', [CampaignController::class, 'store']);
+Route::put('/camp/{campaign}', [CampaignController::class, 'update']);
+Route::get('/camp', [CampaignController::class, 'index']);
+Route::get('/camp/{campaign}', [CampaignController::class, 'show']);
+Route::post('/auction', [AuctionController::class, 'store']);
+Route::get('/auction', [AuctionController::class, 'index']);
+Route::get('/auction/{id}', [AuctionController::class, 'show']);
+Route::post('/trans', [TransactionController::class, 'store']);
+Route::get('/trans', [TransactionController::class, 'index']);
+Route::get('/trans/{id}', [TransactionController::class, 'show']);
