@@ -4,10 +4,8 @@ import {
   TextField,
   Button,
   CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { bgcolor } from "@mui/system";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,7 +31,7 @@ export default function Auction() {
   if (nft) {
     endAt = new Date(nft.endAt * 1000);
   }
-  console.log(nft)
+  console.log(nft);
 
   const colors = [currAuction?.img1_url, currAuction?.img2_url];
   const delay = 7000;
@@ -79,10 +77,8 @@ export default function Auction() {
     };
   }, [index]);
 
- 
-
   const handleOffer = (e) => {
-    setIsDisplay(!isDisplay); 
+    setIsDisplay(!isDisplay);
   };
 
   const bid = async (e) => {
@@ -99,7 +95,7 @@ export default function Auction() {
 
   if (!currAuction) return null;
 
-  return (isLoading ? (
+  return isLoading ? (
     <CircularProgress />
   ) : (
     <Box sx={{ padding: "16px 50px", height: "100%" }}>
@@ -194,9 +190,7 @@ export default function Auction() {
               marginBottom: "8px",
             }}
           >
-            <Typography variant="h5">{`${
-              nft?.highestBid 
-            } ETH`}</Typography>
+            <Typography variant="h5">{`${nft?.highestBid} ETH`}</Typography>
           </Box>
           <Typography variant="subtitle1" gutterBottom>
             Description
@@ -244,6 +238,6 @@ export default function Auction() {
           )}
         </Box>
       </Box>
-    </Box>)
+    </Box>
   );
 }

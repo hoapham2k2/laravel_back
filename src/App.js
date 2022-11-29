@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { Grid, Box, Container } from "@material-ui/core";
+import { Grid, Box, Container } from "@mui/material";
 import { ethers } from "ethers";
 import MarketplaceAbi from "./utils/contractsData/Marketplace.json";
 import MarketplaceAddress from "./utils/contractsData/Marketplace-address.json";
@@ -12,15 +12,16 @@ import Appbar from "./components/Appbar";
 import { CONNECT_ACC } from "./constraint/actionTypes";
 import { Home } from "./pages/Home";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchSolidity} from './actions/solidity'
+import { fetchSolidity } from "./actions/solidity";
 import "./App.css";
 import Auction from "./pages/Auction";
 import Your_NFT from "./pages/Your_NFT";
 
 const App = () => {
   const dispatch = useDispatch();
-  let accounts
-  const web3Handler = async () => { // connect metamask
+  let accounts;
+  const web3Handler = async () => {
+    // connect metamask
     accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
@@ -40,14 +41,14 @@ const App = () => {
     dispatch({
       type: CONNECT_ACC,
       payload: {
-        account: accounts[0]
+        account: accounts[0],
       },
     });
   };
 
   useEffect(() => {
     web3Handler();
-    dispatch(fetchSolidity())
+    dispatch(fetchSolidity());
   });
 
   return (
@@ -63,19 +64,20 @@ const App = () => {
         <Box
           className="right_box"
           sx={{
-            flex:1,
+            flex: 1,
             minHeight: "100%",
             display: "flex",
             flexDirection: "column",
-            bgcolor: "#f5f5f5"
+            bgcolor: "#f5f5f5",
           }}
         >
           {/* the appbar  */}
           <Appbar web3Handler={web3Handler} />
           {/* the body before appbar */}
-          <Container maxWidth="xl"
+          <Container
+            maxWidth="xl"
             className="pages_box"
-            style={{backgroundColor:"#f5f5f5"}}
+            style={{ backgroundColor: "#f5f5f5" }}
           >
             <Switch>
               <Route path="/create_nft" exact component={create_nft} />

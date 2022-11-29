@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, Card, CardMedia, Typography } from '@material-ui/core';
+import React from "react";
+import { Box, Card, CardMedia, Typography } from "@mui/material";
 const NFTItem = () => {
   return (
     <Card sx={{ width: "100%" }}>
@@ -35,4 +35,4 @@ const NFTItem = () => {
   );
 };
 
-export default NFTItem
+export default NFTItem;
