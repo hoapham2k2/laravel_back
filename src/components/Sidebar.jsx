@@ -30,7 +30,7 @@ import { useEffect } from "react";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const drawerWidth = 60;
+const drawerWidth = 70;
 
 export default function MySidebar() {
   const history = useHistory();
