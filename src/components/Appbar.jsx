@@ -77,7 +77,7 @@ const StyledAppBar = styled(AppBar)`
   transition: all 0.4s ease 0s;
   &.colorChange {
     background-color: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   }
 `;
 
