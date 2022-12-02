@@ -1,8 +1,8 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { Paper, Button, Avatar, Card, CardMedia } from "@mui/material";
-import landscape2 from "../assets/img/landscape2.jpg";
-import landscape1 from "../assets/img/landscape1.jpg";
+import landscape2 from "../assets/img/slider1.jpg";
+import landscape1 from "../assets/img/slider2.jpg";
 import img1 from "../assets/img/img1.png";
 import { Box } from "@mui/system";
 
@@ -25,12 +25,17 @@ export default function Slider(props) {
   return (
     <Carousel
       autoPlay
-      interval={2000}
+      interval={6000}
       animation="slide"
-      duration={1000}
+      duration={3000}
       swipe={true}
       indicators
       cycleNavigation={true}
+      sx={{
+        ".css-1m9128y": {
+          display: "none",
+        },
+      }}
     >
       {items.map((item, i) => (
         <Item key={i} item={item} />
@@ -40,21 +45,24 @@ export default function Slider(props) {
 
   function Item(props) {
     return (
-      <Box
+      <Card
         sx={{
-          width: "100%",
           height: "300px",
           overflow: "hidden",
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <CardMedia
-          component="img"
-          image={props.item.img}
-          sx={{ height: "100%", width: "100%" }}
+        <img
+          src={props.item.img}
+          style={{
+            width: "80%",
+            height: "100%",
+            objectFit: "cover",
+          }}
         />
-      </Box>
+      </Card>
     );
   }
 }

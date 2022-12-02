@@ -20,111 +20,128 @@ import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../theme";
 import { useTheme } from "@mui/material/styles";
+import { Button } from "@mui/material";
+import EmoStyled from "@emotion/styled";
 
 // styled search
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
+// const Search = styled("div")(({ theme }) => ({
+//   position: "relative",
+//   borderRadius: theme.shape.borderRadius,
+//   backgroundColor: alpha(theme.palette.common.white, 0.15),
+//   "&:hover": {
+//     backgroundColor: alpha(theme.palette.common.white, 0.25),
+//   },
+//   marginRight: theme.spacing(2),
+//   marginLeft: 0,
+//   width: "100%",
+//   [theme.breakpoints.up("sm")]: {
+//     marginLeft: theme.spacing(3),
+//     width: "auto",
+//   },
+// }));
 
 // style search icon
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
+// const SearchIconWrapper = styled("div")(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: "100%",
+//   position: "absolute",
+//   pointerEvents: "none",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+// }));
 
 // style input base
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   color: "inherit",
+//   "& .MuiInputBase-input": {
+//     padding: theme.spacing(1, 1, 1, 0),
+//     // vertical padding + font size from searchIcon
+//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//     transition: theme.transitions.create("width"),
+//     width: "100%",
+//     [theme.breakpoints.up("md")]: {
+//       width: "20ch",
+//     },
+//   },
+// }));
+
+const StyledAppBar = styled(AppBar)`
+  box-shadow: none;
+  position: sticky;
+
+  top: 0;
+  left: 0;
+  /* Fix your navbar by using above two lines of code */
+  box-shadow: none;
+  transition: all 0.4s ease 0s;
+  &.colorChange {
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  }
+`;
 
 export default function PrimarySearchAppBar({ web3Handler }) {
-  const theme = useTheme();
+  const [colorChange, setColorchange] = React.useState(false);
+  const changeNavbarColor = () => {
+    if (window.scrollY >= 60) {
+      setColorchange(true);
+    } else {
+      setColorchange(false);
+    }
+  };
+  window.addEventListener("scroll", changeNavbarColor);
 
   const account = useSelector((state) => state.solidity.account);
   return (
-    <Box sx={{}}>
-      <AppBar position="static">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+    <StyledAppBar
+      color="transparent"
+      className={colorChange ? "navbar colorChange" : "navbar"}
+    >
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        {/* <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Search…"
+            inputProps={{ "aria-label": "search" }}
+          />
+        </Search> */}
 
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginRight: "30px",
-              }}
-            >
-              <BorderColorIcon sx={{ marginRight: "4px" }} />
-              Create
-            </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          {/* <Typography
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginRight: "30px",
+            }}
+          >
+            <BorderColorIcon sx={{ marginRight: "4px" }} />
+            Create
+          </Typography> */}
+          <Button startIcon={<BorderColorIcon />}>Create</Button>
+          <Button startIcon={<BloodtypeIcon />}>Donate</Button>
 
-            <Typography
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginRight: "30px",
-              }}
-            >
-              <BloodtypeIcon sx={{ marginRight: "4px" }} />
-              Donate
-            </Typography>
-            <Typography
-              onClick={() => {
-                account ? console.log("") : web3Handler();
-              }}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginRight: "30px",
-                cursor: "pointer",
-              }}
-            >
-              {account
-                ? `${account.slice(0, 5) + "..." + account.slice(38, 42)}`
-                : "Connect Wallet"}
-            </Typography>
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
+          <Typography
+            onClick={() => {
+              account ? console.log("") : web3Handler();
+            }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginRight: "30px",
+              cursor: "pointer",
+            }}
+          >
+            {account
+              ? `${account.slice(0, 5) + "..." + account.slice(38, 42)}`
+              : "Connect Wallet"}
+          </Typography>
+        </Box>
+      </Toolbar>
+    </StyledAppBar>
   );
 }

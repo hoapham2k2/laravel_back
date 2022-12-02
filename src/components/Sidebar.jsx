@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Box, CssBaseline, Button, Tooltip, IconButton } from "@mui/material";
+import {
+  Box,
+  CssBaseline,
+  Button,
+  Tooltip,
+  IconButton,
+  Toolbar,
+} from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
@@ -23,6 +30,8 @@ import { useEffect } from "react";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
+const drawerWidth = 60;
+
 export default function MySidebar() {
   const history = useHistory();
   const location = useLocation();
@@ -38,27 +47,26 @@ export default function MySidebar() {
   };
 
   return (
-    <Box sx={{ display: `flex`, flexDirection: "column" }}>
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          boxSizing: "border-box",
+        },
+      }}
+      variant="permanent"
+      anchor="left"
+    >
       <CssBaseline />
-
-      <Box sx={{ display: `flex`, height: `100px`, margin: `0 auto` }}>
-        <Box
-          sx={{
-            display: `flex`,
-            justifyContent: `center`,
-            alignItems: `center`,
-          }}
-        >
-          <Box>{/* <img src={logo} alt="logo" /> */}</Box>
-        </Box>
-      </Box>
-      <Divider />
-      <Box
+      <Toolbar
         sx={{
-          display: `flex`,
+          height: "100%",
+          display: "flex",
           flexDirection: "column",
-          justifyContent: "start",
-          gap: 3,
+          justifyContent: "center",
+          gap: "20px",
         }}
       >
         <Button
@@ -125,24 +133,7 @@ export default function MySidebar() {
             </IconButton>
           </Tooltip>
         </Button>
-        <Button>
-          <SettingsIcon />
-        </Button>
-        <Divider />
-      </Box>
-
-      {/* start phan footer */}
-      <Box
-        sx={{
-          display: `flex`,
-          flex: `1`,
-          alignItems: `flex-end`,
-          justifyContent: `center`,
-          paddingBottom: `10px`,
-        }}
-      >
-        {/* <img src={bottomSideBar} alt="anhBottom" /> */}
-      </Box>
-    </Box>
+      </Toolbar>
+    </Drawer>
   );
 }

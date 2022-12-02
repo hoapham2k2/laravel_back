@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { Grid, Box, Container } from "@mui/material";
+import { Grid, Box, Container, ThemeProvider } from "@mui/material";
 import { ethers } from "ethers";
 import MarketplaceAbi from "./utils/contractsData/Marketplace.json";
 import MarketplaceAddress from "./utils/contractsData/Marketplace-address.json";
@@ -16,6 +16,7 @@ import { fetchSolidity } from "./actions/solidity";
 import "./App.css";
 import Auction from "./pages/Auction";
 import Your_NFT from "./pages/Your_NFT";
+import createTheme from "@mui/material/styles/createTheme";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -51,43 +52,53 @@ const App = () => {
     dispatch(fetchSolidity());
   });
 
+  // darkmode
+  const [darkMode, setDarkMode] = useState(true);
+
+  const darkTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: darkMode ? "dark" : "light",
+          primary: {
+            main: "#fff",
+          },
+        },
+      }),
+    [darkMode]
+  );
+
   return (
     <BrowserRouter>
-      <Box
-        className="content"
-        sx={{ width: "100%", height: "100%", display: "flex" }}
-      >
-        {/* sidebar */}
-        <Sidebar />
-
-        {/* right part of app */}
+      <ThemeProvider theme={darkTheme}>
         <Box
-          className="right_box"
-          sx={{
-            flex: 1,
-            minHeight: "100%",
-            display: "flex",
-            flexDirection: "column",
-            bgcolor: "#f5f5f5",
-          }}
+          className="content"
+          sx={{ width: "100%", height: "100%", display: "flex" }}
         >
-          {/* the appbar  */}
-          <Appbar web3Handler={web3Handler} />
-          {/* the body before appbar */}
-          <Container
-            maxWidth="xl"
-            className="pages_box"
-            style={{ backgroundColor: "#f5f5f5" }}
+          {/* sidebar */}
+          <Sidebar />
+
+          {/* right part of app */}
+          <Box
+            className="right_box"
+            sx={{
+              flex: 1,
+              height: "100%",
+              overFlow: "hidden",
+            }}
           >
-            <Switch>
-              <Route path="/create_nft" exact component={create_nft} />
-              <Route path="/auction/:nft_id" exact component={Auction} />
-              <Route path="/list_nft" exact component={Your_NFT} />
-              <Route path="/" exact component={Home} />
-            </Switch>
-          </Container>
+            <Appbar web3Handler={web3Handler} />
+            <Box className="pages_box" p={3}>
+              <Switch>
+                <Route path="/create_nft" exact component={create_nft} />
+                <Route path="/auction/:nft_id" exact component={Auction} />
+                <Route path="/list_nft" exact component={Your_NFT} />
+                <Route path="/" exact component={Home} />
+              </Switch>
+            </Box>
+          </Box>
         </Box>
-      </Box>
+      </ThemeProvider>
     </BrowserRouter>
   );
 };

@@ -8,48 +8,69 @@ import {
   Button,
 } from "@mui/material";
 import Slider from "../components/Slider";
-import img2 from "../assets/img/img2.png";
 
+import img1 from "../assets/img/img1.jpg";
+import img2 from "../assets/img/img2.jpg";
+import styled from "@emotion/styled";
+
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+
+// Item of Campaign
 const ItemCampaignDemo = () => {
   return (
-    <Box
+    <Card
       sx={{
+        width: "100%",
         display: "flex",
-        bgcolor: "white",
+        gap: "16px",
         border: "1px solid #E5E5E5",
-        borderRadius: "10px",
-        padding: "12px",
-        gap: "12px",
+        borderRadius: "8px",
+        padding: "20px",
+        height: 100,
       }}
     >
-      <Avatar></Avatar>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Avatar sx={{ height: 56, width: 56, borderRadius: "15px" }} src={img2} />
+
+      <Box sx={{ flexShrink: 1, display: "flex", flexDirection: "column" }}>
         <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>
           Title
         </Typography>
         <Typography variant="body1">Remaining time</Typography>
       </Box>
-    </Box>
+
+      <Button sx={{ marginLeft: "auto" }}>Join now</Button>
+    </Card>
   );
 };
 
+//  styled img and both nft
+
+const StyledImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  &:hover {
+    transform: scale(1.1);
+
+    transition: all 0.3s ease-in-out;
+  }
+`;
+
 const NFTItem = () => {
   return (
-    <Card sx={{ width: "100%" }}>
+    <Card>
       <Box
         sx={{
           flex: 1,
-          height: "190px",
+          width: 300,
+          height: 300,
           overflow: "hidden",
           display: "flex",
           alignItems: "center",
         }}
       >
-        <CardMedia
-          component="img"
-          image={img2}
-          sx={{ height: "100%", width: "100%" }}
-        />
+        <StyledImg src={img1} />
       </Box>
       <Box sx={{ display: "flex", padding: "16px" }}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -70,20 +91,27 @@ const NFTItem = () => {
 
 const NFTList = () => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", mt: 3 }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "flex-end",
+          mb: 2,
         }}
       >
         <Typography variant="h4">NFT</Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>
-          See more...
-        </Typography>
+        <Button variant="text">View all</Button>
       </Box>
-      <Box sx={{ display: "flex", gap: "14px" }}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          rowGap: "50px",
+        }}
+      >
+        <NFTItem />
         <NFTItem />
         <NFTItem />
         <NFTItem />
@@ -94,68 +122,51 @@ const NFTList = () => {
 
 export const Home = () => {
   return (
-    <>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ flex: 2, flexDirection: "column" }}>
-          <Slider />
-          <NFTList />
-        </Box>
+    <Box>
+      <Slider />
+      <NFTList />
+      <Box mt={3}>
+        {/* information of campaign list demo */}
         <Box
           sx={{
-            flex: 1,
             display: "flex",
-            flexDirection: "column",
-            padding: "0px 24px",
+            justifyContent: "space-between",
+            mb: 1,
           }}
         >
-          {/* information of campaign list demo */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              paddingBottom: "34px",
-              gap: "10px",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-              }}
-            >
-              <Typography variant="h4">New Campaign</Typography>
-              <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>
-                See more...
-              </Typography>
-            </Box>
-            <ItemCampaignDemo></ItemCampaignDemo>
-            <ItemCampaignDemo></ItemCampaignDemo>
-            <ItemCampaignDemo></ItemCampaignDemo>
-          </Box>
-
-          {/* the wallet */}
-          <Card
-            sx={{
-              width: "100%",
-              height: "100%",
-              bgcolor: "#fff",
-              borderRadius: "10px",
-              padding: "20px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Button
-              variant="contained"
-              sx={{ height: "80px", width: "80%", alignSelf: "center" }}
-            >
-              <Typography>Connect to wallet</Typography>
-            </Button>
-          </Card>
+          <Typography variant="h4">New Campaign</Typography>
+          <Button variant="text">See more</Button>
         </Box>
+        {/* <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          <ItemCampaignDemo></ItemCampaignDemo>
+          <ItemCampaignDemo></ItemCampaignDemo>
+          <ItemCampaignDemo></ItemCampaignDemo>
+        </Box> */}
+
+        <Grid2 container spacing={3}>
+          <Grid2 xs={6}>
+            <ItemCampaignDemo />
+          </Grid2>
+          <Grid2 xs={6}>
+            <ItemCampaignDemo />
+          </Grid2>
+          <Grid2 xs={6}>
+            <ItemCampaignDemo />
+          </Grid2>
+          <Grid2 xs={6}>
+            <ItemCampaignDemo />
+          </Grid2>
+          <Grid2 xs={6}>
+            <ItemCampaignDemo />
+          </Grid2>
+          <Grid2 xs={6}>
+            <ItemCampaignDemo />
+          </Grid2>
+        </Grid2>
       </Box>
-    </>
+
+      {/* nft 101 */}
+      <Box mt={3}></Box>
+    </Box>
   );
 };
