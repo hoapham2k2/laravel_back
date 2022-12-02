@@ -23,6 +23,8 @@ import { useTheme } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import EmoStyled from "@emotion/styled";
 
+import logoWeb from "../assets/img/weshare.svg";
+
 // styled search
 // const Search = styled("div")(({ theme }) => ({
 //   position: "relative",
@@ -72,7 +74,6 @@ const StyledAppBar = styled(AppBar)`
 
   top: 0;
   left: 0;
-  /* Fix your navbar by using above two lines of code */
   box-shadow: none;
   transition: all 0.4s ease 0s;
   &.colorChange {
@@ -99,6 +100,15 @@ export default function PrimarySearchAppBar({ web3Handler }) {
       className={colorChange ? "navbar colorChange" : "navbar"}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <img src={logoWeb} alt="logo" style={{ width: 40, height: 40 }} />
+          <Typography
+            variant="h5"
+            sx={{ textTransform: "uppercase", letterSpacing: 4 }}
+          >
+            WESHARE
+          </Typography>
+        </Box>
         {/* <Search>
           <SearchIconWrapper>
             <SearchIcon />
