@@ -26,47 +26,47 @@ import EmoStyled from "@emotion/styled";
 import logoWeb from "../assets/img/weshare.svg";
 
 // styled search
-// const Search = styled("div")(({ theme }) => ({
-//   position: "relative",
-//   borderRadius: theme.shape.borderRadius,
-//   backgroundColor: alpha(theme.palette.common.white, 0.15),
-//   "&:hover": {
-//     backgroundColor: alpha(theme.palette.common.white, 0.25),
-//   },
-//   marginRight: theme.spacing(2),
-//   marginLeft: 0,
-//   width: "100%",
-//   [theme.breakpoints.up("sm")]: {
-//     marginLeft: theme.spacing(3),
-//     width: "auto",
-//   },
-// }));
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
 
 // style search icon
-// const SearchIconWrapper = styled("div")(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: "100%",
-//   position: "absolute",
-//   pointerEvents: "none",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-// }));
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
 
 // style input base
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//   color: "inherit",
-//   "& .MuiInputBase-input": {
-//     padding: theme.spacing(1, 1, 1, 0),
-//     // vertical padding + font size from searchIcon
-//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//     transition: theme.transitions.create("width"),
-//     width: "100%",
-//     [theme.breakpoints.up("md")]: {
-//       width: "20ch",
-//     },
-//   },
-// }));
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "75ch",
+    },
+  },
+}));
 
 const StyledAppBar = styled(AppBar)`
   box-shadow: none;
@@ -99,7 +99,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
       color="transparent"
       className={colorChange ? "navbar colorChange" : "navbar"}
     >
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Toolbar sx={{ display: "flex" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <img src={logoWeb} alt="logo" style={{ width: 40, height: 40 }} />
           <Typography
@@ -109,7 +109,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             WESHARE
           </Typography>
         </Box>
-        {/* <Search>
+        <Search>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
@@ -117,9 +117,17 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             placeholder="Search…"
             inputProps={{ "aria-label": "search" }}
           />
-        </Search> */}
+        </Search>
 
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box
+          sx={{
+            paddingLeft: 2,
+            flex: 1,
+            marginLeft: "auto",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           {/* <Typography
             sx={{
               display: "flex",

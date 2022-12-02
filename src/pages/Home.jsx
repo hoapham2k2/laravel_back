@@ -120,10 +120,35 @@ const NFTList = () => {
   );
 };
 
+const HeaderTitleStyled = styled(Box)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  & .title {
+    font-size: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 30px 50px;
+    letter-spacing: 5px;
+    color: lightgreen;
+  }
+`;
+
+const HomePages = styled(Box)``;
+
+const HeaderPages = styled(Box)``;
+
 export const Home = () => {
   return (
-    <Box>
-      <Slider />
+    <HomePages>
+      <HeaderPages>
+        <HeaderTitleStyled>
+          <Typography className="title">Giving is receiving</Typography>
+        </HeaderTitleStyled>
+        <Slider />
+      </HeaderPages>
       <NFTList />
       <Box mt={3}>
         {/* information of campaign list demo */}
@@ -167,6 +192,6 @@ export const Home = () => {
 
       {/* nft 101 */}
       <Box mt={3}></Box>
-    </Box>
+    </HomePages>
   );
 };
