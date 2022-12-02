@@ -12,33 +12,62 @@ import Slider from "../components/Slider";
 import img1 from "../assets/img/img1.jpg";
 import img2 from "../assets/img/img2.jpg";
 import styled from "@emotion/styled";
-
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import Footer from "../components/Footer";
 
+// declare some constant of campaign
+const BORDER = "1px solid #E5E5E5";
+const CARD_BORDER_RADIUS = "16px";
+const CARD_PADDING = "20px";
+const COLUMN_GAP = 2;
+const FULL_WIDTH = "100%";
+const PART_MARGIN_TOP = 3;
+const SETTING_FLEX_COL = { display: "flex", flexDirection: "column" };
+const TEXT_MARGIN_BOTTOM = 1;
+
+const ItemTitle = styled(Box)`
+  .title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .detail {
+    font-size: 1rem;
+  }
+`;
 // Item of Campaign
 const ItemCampaignDemo = () => {
   return (
     <Card
       sx={{
-        width: "100%",
         display: "flex",
-        gap: "16px",
-        border: "1px solid #E5E5E5",
-        borderRadius: "8px",
-        padding: "20px",
-        height: 100,
+        width: FULL_WIDTH,
+        gap: COLUMN_GAP,
+        border: BORDER,
+        borderRadius: CARD_BORDER_RADIUS,
+        padding: CARD_PADDING,
       }}
     >
-      <Avatar sx={{ height: 56, width: 56, borderRadius: "15px" }} src={img2} />
+      <Avatar
+        sx={{
+          height: 56,
+          width: 56,
+          borderRadius: CARD_BORDER_RADIUS,
+          border: BORDER,
+        }}
+        src={img2}
+      />
 
-      <Box sx={{ flexShrink: 1, display: "flex", flexDirection: "column" }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>
-          Title
-        </Typography>
-        <Typography variant="body1">Remaining time</Typography>
-      </Box>
+      <ItemTitle sx={{ ...SETTING_FLEX_COL, justifyContent: "space-between" }}>
+        <Typography className="title">SuperIdol</Typography>
+        <Typography className="detail">02:18:25s</Typography>
+      </ItemTitle>
 
-      <Button sx={{ marginLeft: "auto" }}>Join now</Button>
+      <Button variant="text" sx={{ marginLeft: "auto" }}>
+        Join now
+      </Button>
     </Card>
   );
 };
@@ -46,13 +75,11 @@ const ItemCampaignDemo = () => {
 //  styled img and both nft
 
 const StyledImg = styled.img`
-  width: 100%;
-  height: 100%;
+  width: ${FULL_WIDTH};
+  height: ${FULL_WIDTH};
   object-fit: cover;
-
   &:hover {
     transform: scale(1.1);
-
     transition: all 0.3s ease-in-out;
   }
 `;
@@ -72,17 +99,35 @@ const NFTItem = () => {
       >
         <StyledImg src={img1} />
       </Box>
-      <Box sx={{ display: "flex", padding: "16px" }}>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>
-            Title
+      <Box sx={{ display: "block", padding: "16px" }}>
+        <Box sx={{ ...SETTING_FLEX_COL }}>
+          <Typography
+            sx={{
+              fontSize: "1.2rem",
+              textTransform: "uppercase",
+              letterSpacing: "5px",
+              fontWeight: 700,
+            }}
+          >
+            The Lonely Guy
           </Typography>
-          <Typography variant="body1">Remaining time...</Typography>
-        </Box>
-        <Box>
-          <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>
-            Price
-          </Typography>
+          <Box
+            sx={{
+              width: FULL_WIDTH,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+            }}
+          >
+            <Typography variant="subtitle1">3:20:19s</Typography>
+            <Typography
+              variant="h5"
+              fontWeight={700}
+              sx={{ textTransform: "uppercase", color: "lightgreen" }}
+            >
+              5.0 ETH
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Card>
@@ -91,12 +136,12 @@ const NFTItem = () => {
 
 const NFTList = () => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", mt: 3 }}>
+    <Box mt={PART_MARGIN_TOP} sx={SETTING_FLEX_COL}>
       <Box
+        mb={TEXT_MARGIN_BOTTOM}
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          mb: 2,
         }}
       >
         <Typography variant="h4">NFT</Typography>
@@ -120,6 +165,47 @@ const NFTList = () => {
   );
 };
 
+// Campaign List
+
+const CampaignList = () => {
+  return (
+    <Box mt={3}>
+      {/* information of campaign list demo */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          mb: 1,
+        }}
+      >
+        <Typography variant="h4">New Campaign</Typography>
+        <Button variant="text">See more</Button>
+      </Box>
+
+      <Grid2 container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid2 xs={6}>
+          <ItemCampaignDemo />
+        </Grid2>
+        <Grid2 xs={6}>
+          <ItemCampaignDemo />
+        </Grid2>
+        <Grid2 xs={6}>
+          <ItemCampaignDemo />
+        </Grid2>
+        <Grid2 xs={6}>
+          <ItemCampaignDemo />
+        </Grid2>
+        <Grid2 xs={6}>
+          <ItemCampaignDemo />
+        </Grid2>
+        <Grid2 xs={6}>
+          <ItemCampaignDemo />
+        </Grid2>
+      </Grid2>
+    </Box>
+  );
+};
+
 const HeaderTitleStyled = styled(Box)`
   width: 100%;
   display: flex;
@@ -127,12 +213,14 @@ const HeaderTitleStyled = styled(Box)`
   margin-bottom: 10px;
 
   & .title {
-    font-size: 50px;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 30px 50px;
+    font-size: 50px;
     letter-spacing: 5px;
-    color: lightgreen;
+    font-size: 72px;
+    background: -webkit-linear-gradient(#68b984, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;
 
@@ -150,48 +238,10 @@ export const Home = () => {
         <Slider />
       </HeaderPages>
       <NFTList />
-      <Box mt={3}>
-        {/* information of campaign list demo */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            mb: 1,
-          }}
-        >
-          <Typography variant="h4">New Campaign</Typography>
-          <Button variant="text">See more</Button>
-        </Box>
-        {/* <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-          <ItemCampaignDemo></ItemCampaignDemo>
-          <ItemCampaignDemo></ItemCampaignDemo>
-          <ItemCampaignDemo></ItemCampaignDemo>
-        </Box> */}
-
-        <Grid2 container spacing={3}>
-          <Grid2 xs={6}>
-            <ItemCampaignDemo />
-          </Grid2>
-          <Grid2 xs={6}>
-            <ItemCampaignDemo />
-          </Grid2>
-          <Grid2 xs={6}>
-            <ItemCampaignDemo />
-          </Grid2>
-          <Grid2 xs={6}>
-            <ItemCampaignDemo />
-          </Grid2>
-          <Grid2 xs={6}>
-            <ItemCampaignDemo />
-          </Grid2>
-          <Grid2 xs={6}>
-            <ItemCampaignDemo />
-          </Grid2>
-        </Grid2>
-      </Box>
-
+      <CampaignList />
       {/* nft 101 */}
-      <Box mt={3}></Box>
+      {/* footer */}
+      <Footer />
     </HomePages>
   );
 };
