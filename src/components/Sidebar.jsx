@@ -69,70 +69,56 @@ export default function MySidebar() {
           gap: "20px",
         }}
       >
-        <Button
-          onClick={() => {
-            history.push("/");
-          }}
-          sx={pathname == "" ? backLink : {}}
-        >
-          <Tooltip title="Home" placement="right-end">
-            <IconButton>
-              <HomeIcon />
-            </IconButton>
-          </Tooltip>
-        </Button>
-
-        <Button
-          onClick={() => {
-            history.push("/list_nft");
-          }}
-          sx={pathname == "list_nft" ? backLink : {}}
-        >
-          <Tooltip title="List NFT" placement="right-end">
-            <IconButton>
-              <FormatListBulletedIcon />
-            </IconButton>
-          </Tooltip>
-        </Button>
-
-        <Button
-          onClick={() => {
-            history.push("/history");
-          }}
-          sx={pathname == "history" ? backLink : {}}
-        >
-          <Tooltip title="History" placement="right-end">
-            <IconButton>
-              <ReceiptLongIcon />
-            </IconButton>
-          </Tooltip>
-        </Button>
-
-        <Button
-          onClick={() => {
-            history.push("/auction");
-          }}
-          sx={pathname == "auction" ? backLink : {}}
-        >
-          <Tooltip title="Auction" placement="right-end">
-            <IconButton>
-              <ShoppingCartCheckoutIcon />
-            </IconButton>
-          </Tooltip>
-        </Button>
-
-        <Button
-          onClick={() => {
-            history.push("/create_nft");
-          }}
-          sx={pathname == "create_nft" ? backLink : {}}
-        >
-          <Tooltip title="Create NFT" placement="right-end">
-            <IconButton>
-              <CloudUploadIcon />
-            </IconButton>
-          </Tooltip>
-        </Button>
+        <Tooltip title="Home" placement="right-end">
+          <IconButton
+            onClick={() => {
+              history.push("/");
+            }}
+            sx={pathname == "" ? backLink : {}}
+          >
+            <HomeIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="List NFT" placement="right-end">
+          <IconButton
+            onClick={() => {
+              history.push("/list_nft");
+            }}
+            sx={pathname == "list_nft" ? backLink : {}}
+          >
+            <FormatListBulletedIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="History" placement="right-end">
+          <IconButton
+            onClick={() => {
+              history.push("/history");
+            }}
+            sx={pathname == "history" ? backLink : {}}
+          >
+            <ReceiptLongIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Auction" placement="right-end">
+          <IconButton
+            onClick={() => {
+              history.push("/auction");
+            }}
+            sx={pathname == "auction" ? backLink : {}}
+          >
+            <ShoppingCartCheckoutIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Create NFT" placement="right-end">
+          <IconButton
+            onClick={() => {
+              history.push("/create_nft");
+            }}
+            sx={pathname == "create_nft" ? backLink : {}}
+          >
+            <CloudUploadIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </Drawer>
   );

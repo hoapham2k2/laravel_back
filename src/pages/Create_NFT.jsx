@@ -1,27 +1,32 @@
 import React from "react";
 import {
-  Grid,
   Box,
   Typography,
-  Input,
   Button,
   CssBaseline,
   TextField,
+  Card,
 } from "@mui/material";
 
 import DropButton from "../components/DropButton.jsx";
 
 import { useState } from "react";
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import { Buffer } from "buffer";
 import { pinJSONToIPFS } from "../utils/pinata.js";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  // useDispatch,
+  useSelector,
+} from "react-redux";
+
+import styled from "@emotion/styled";
+
 const Create_NFT = () => {
   const { nftContract, marketplaceContract } = useSelector(
     (state) => state.solidity
   );
   const [image, setImage] = useState("");
-  const [price, setPrice] = useState(null);
+  // const [price, setPrice] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [buffer, setBuffer] = useState(null);
@@ -95,28 +100,27 @@ const Create_NFT = () => {
     }
   };
 
+  const StyledCreateNFTPages = styled(Box)`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 30px;
+  `;
+
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "space-between",
-        gap: "20px",
-        padding: "30px",
-      }}
-    >
+    <StyledCreateNFTPages className="createNFT_pages">
       {/* this is a box to contain all component  */}
 
       {/* Cssbaseline */}
       <CssBaseline />
       {/* start left box to upload nft */}
-      <Box
+      <Card
         sx={{
           display: "flex",
           flexDirection: "column",
-          border: "30px solid #fff",
-          bgcolor: "#fff",
+          border: "30px solid transparent",
           borderRadius: "20px",
           flex: "2",
         }}
@@ -142,18 +146,17 @@ const Create_NFT = () => {
         </Box>
 
         <DropButton setImage={setImage} />
-      </Box>
+      </Card>
       {/* end left box to upload nft */}
 
       {/* start right box to set nft interface */}
-      <Box
+      <Card
         sx={{
           display: "flex",
           flexDirection: "column",
           flex: "1",
-          border: "30px solid #fff",
+          border: "30px solid transparent",
           borderRadius: "20px",
-          bgcolor: "#fff",
           justifyContent: "space-between",
         }}
       >
@@ -190,9 +193,9 @@ const Create_NFT = () => {
         <Button variant="outlined" onClick={createNFT} size="lg">
           Create & List NFT!
         </Button>
-      </Box>
+      </Card>
       {/* end right box to set nft interface */}
-    </Box>
+    </StyledCreateNFTPages>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import NFTItem from "../components/NFTItem";
 import { useSelector } from "react-redux";
 import {
@@ -16,16 +16,17 @@ const Your_NFT = () => {
   let { nftList, isLoading, account, marketplaceContract, nftContract } =
     useSelector((state) => state.solidity);
 
-  let myNFT = nftList.filter(nft=> nft.owner.toLowerCase() == account.toLowerCase())
+  let myNFT = nftList.filter(
+    (nft) => nft.owner.toLowerCase() == account.toLowerCase()
+  );
   console.log(nftList);
 
   return isLoading ? (
     <CircularProgress />
   ) : (
     <Box>
-      <Grid
-        container
-        disableEqualOverflow={true}
+      <Box
+        // disableEqualOverflow={true}
         md={12}
         sx={{
           display: `flex`,
@@ -39,9 +40,9 @@ const Your_NFT = () => {
 
         {/* an box to contain the body */}
         <Box sx={{ marginTop: `25px` }}>
-          <Grid container columnSpacing={6} rowSpacing={3}>
+          <Box>
             {myNFT.map((item, id) => (
-              <Grid item md={6}>
+              <Box item md={6}>
                 <MyNFTInfo
                   id={item.tokenId}
                   image={item.image}
@@ -52,11 +53,11 @@ const Your_NFT = () => {
                   nftContract={nftContract}
                   account={account}
                 />
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Box>
-      </Grid>
+      </Box>
     </Box>
   );
 };
