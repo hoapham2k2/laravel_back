@@ -95,16 +95,6 @@ export default function MyNFTInfo({
           <Box flex={1}>
             <Button onClick={handleClickOpen}>Donate this NFT</Button>
           </Box>
-          {/* <Box display="flex">
-            <Box flex={1}>
-              <Typography variant="title2" sx={{ fontWeight: `700` }}>
-                Price
-              </Typography>
-            </Box>
-            <Box flex={1}>
-              <Typography variant="title2">{price}</Typography>
-            </Box>
-          </Box> */}
         </Box>
       </Box>
       <Dialog open={open} onClose={handleClose}>

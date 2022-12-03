@@ -20,7 +20,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -61,35 +61,37 @@ export default function TabsList(props) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        {props.isLoading ? (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Typography>Waiting for loading from smart contract</Typography>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Box>
-            {props.yourNFT ? (
-              props.yourNFT.map((item, id) => (
-                <MyNFTInfo
-                  id={item.tokenId}
-                  image={item.image}
-                  name={item.name}
-                  description={item.description}
-                  price={item.startPrice}
-                  marketplaceContract={props.marketplaceContract}
-                  nftContract={props.nftContract}
-                  account={props.account}
-                />
-              ))
-            ) : (
-              <Box>
-                <Typography>
+        <Box>
+          {props.isLoading ? (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Typography component={"span"}>
+                Waiting for loading from smart contract
+              </Typography>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box>
+              {props.yourNFT ? (
+                props.yourNFT.map((item, id) => (
+                  <MyNFTInfo
+                    id={item.tokenId}
+                    image={item.image}
+                    name={item.name}
+                    description={item.description}
+                    price={item.startPrice}
+                    marketplaceContract={props.marketplaceContract}
+                    nftContract={props.nftContract}
+                    account={props.account}
+                  />
+                ))
+              ) : (
+                <Typography component={"span"}>
                   Sorry, you don't have any NFT in your account
                 </Typography>
-              </Box>
-            )}
-          </Box>
-        )}
+              )}
+            </Box>
+          )}
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two

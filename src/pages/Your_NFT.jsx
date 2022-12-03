@@ -30,9 +30,11 @@ const Your_NFT = () => {
 
   const [yourNFT, setYourNFT] = useState(false);
 
+  // let myNFT = [...nftList];
   let myNFT = nftList.filter(
     (nft) => nft.owner.toLowerCase() === account.toLowerCase()
   );
+  console.log("myNFT:", myNFT);
 
   console.log("nftlist: ", nftList);
   // tabs list initiabl state and
