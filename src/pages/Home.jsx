@@ -224,24 +224,39 @@ const HeaderTitleStyled = styled(Box)`
   }
 `;
 
-const HomePages = styled(Box)``;
+const HomePages = styled(Box)`
+  padding: 24px;
+`;
 
 const HeaderPages = styled(Box)``;
 
+// nft 101
+
+const NFT101 = () => {
+  return (
+    <>
+      <Typography>THis is NFT 101</Typography>
+    </>
+  );
+};
+
 export const Home = () => {
   return (
-    <HomePages>
-      <HeaderPages>
-        <HeaderTitleStyled>
-          <Typography className="title">Giving is receiving</Typography>
-        </HeaderTitleStyled>
-        <Slider />
-      </HeaderPages>
-      <NFTList />
-      <CampaignList />
-      {/* nft 101 */}
-      {/* footer */}
+    <>
+      <HomePages>
+        <HeaderPages>
+          <HeaderTitleStyled>
+            <Typography className="title">Giving is receiving</Typography>
+          </HeaderTitleStyled>
+          <Slider />
+        </HeaderPages>
+        <NFTList />
+        <CampaignList />
+        {/* nft 101 */}
+        <NFT101 />
+        {/* footer */}
+      </HomePages>
       <Footer />
-    </HomePages>
+    </>
   );
 };

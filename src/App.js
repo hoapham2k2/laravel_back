@@ -88,7 +88,7 @@ const App = () => {
             }}
           >
             <Appbar web3Handler={web3Handler} />
-            <Box className="pages_box" p={3}>
+            <Box className="pages_box">
               <Switch>
                 <Route path="/create_nft" exact component={create_nft} />
                 <Route path="/auction/:nft_id" exact component={Auction} />
