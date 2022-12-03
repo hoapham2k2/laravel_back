@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Avatar,
-  Card,
-  CardMedia,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Avatar, Card, Button } from "@mui/material";
 import Slider from "../components/Slider";
 
 import img1 from "../assets/img/img1.jpg";
@@ -14,6 +7,7 @@ import img2 from "../assets/img/img2.jpg";
 import styled from "@emotion/styled";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import Footer from "../components/Footer";
+import NFT101 from "../components/NFT101";
 
 // declare some constant of campaign
 const BORDER = "1px solid #E5E5E5";
@@ -229,16 +223,6 @@ const HomePages = styled(Box)`
 `;
 
 const HeaderPages = styled(Box)``;
-
-// nft 101
-
-const NFT101 = () => {
-  return (
-    <>
-      <Typography>THis is NFT 101</Typography>
-    </>
-  );
-};
 
 export const Home = () => {
   return (

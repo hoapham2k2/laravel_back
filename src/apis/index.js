@@ -1,7 +1,8 @@
 import axios from "axios";
 
-
-const API = axios.create({ baseURL: 'http://127.0.0.1:8000'})
+const API = axios.create({
+  baseURL: "https://laravel-production-443a.up.railway.app/",
+});
 
 // ==> token author
 // API.interceptors.request.use((req) => {
@@ -9,10 +10,10 @@ const API = axios.create({ baseURL: 'http://127.0.0.1:8000'})
 //     req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
 //   }
 //   return req;
-// });   
+// });
 
-export const getCamp = () => API.get('/api/camp');
+export const getCamp = () => API.get("/api/camp");
 export const getCampById = (id) => API.get(`/api/camp/${id}`);
-export const getAuction = () => API.get('/api/auction');
+export const getAuction = () => API.get("/api/auction");
 export const getAuctionById = (id) => API.get(`/api/auction/${id}`);
 export const createNoti = (noti) => API.post(`/api/noti`, noti);

@@ -1,12 +1,10 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { Paper, Button, Avatar, Card, CardMedia } from "@mui/material";
+import { Card } from "@mui/material";
 import landscape1 from "../assets/img/slider1.jpg";
 import landscape2 from "../assets/img/slider2.jpg";
 import landscape3 from "../assets/img/slider3.jpg";
 import landscape4 from "../assets/img/slider4.jpg";
-import img1 from "../assets/img/img1.png";
-import { Box } from "@mui/system";
 
 export default function Slider(props) {
   var items = [
@@ -32,7 +30,7 @@ export default function Slider(props) {
     <Carousel
       autoPlay
       interval={4000}
-      animation="slide"
+      animation="fade"
       duration={2000}
       swipe={true}
       indicators
@@ -67,6 +65,7 @@ export default function Slider(props) {
             height: "100%",
             objectFit: "cover",
           }}
+          alt={props.item.name}
         />
       </Card>
     );
