@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { CircularProgress } from "@mui/material";
 import MyNFTInfo from "../NFT_info/NFT_info";
-
+import _ from "lodash";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -47,6 +47,32 @@ export default function TabsList(props) {
     setValue(newValue);
   };
 
+  // if else statement to check if the nftList is empty or not
+
+  let result;
+
+  if (_.isEmpty(props.myNFT)) {
+    result = (
+      <Typography component={"span"}>
+        Sorry, you don't have any NFT in your account
+      </Typography>
+    );
+  } else {
+    result = props.myNFT.map((item, id) => (
+      <MyNFTInfo
+        key={id}
+        id={item.tokenId}
+        image={item.image}
+        name={item.name}
+        description={item.description}
+        price={item.startPrice}
+        marketplaceContract={props.marketplaceContract}
+        nftContract={props.nftContract}
+        account={props.account}
+      />
+    ));
+  }
+
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -77,7 +103,8 @@ export default function TabsList(props) {
                 gap: 8,
               }}
             >
-              {props.myNFT ? (
+              {result}
+              {/* {props.myNFT ? (
                 props.myNFT.map((item, id) => (
                   <MyNFTInfo
                     key={id}
@@ -91,11 +118,12 @@ export default function TabsList(props) {
                     account={props.account}
                   />
                 ))
-              ) : (
-                <Typography component={"span"}>
+              ) : ( <Typography component={"span"}>
                   Sorry, you don't have any NFT in your account
                 </Typography>
+               
               )}
+               */}
             </Box>
           )}
         </Box>
