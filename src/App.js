@@ -8,7 +8,7 @@ import NFTAbi from "./utils/contractsData/NFT.json";
 import NFTAddress from "./utils/contractsData/NFT-address.json";
 import create_nft from "./pages/Create_NFT";
 import Sidebar from "./components/Sidebar";
-import Appbar from "./components/Appbar";
+import Appbar from "./components/AppComponent/Appbar";
 import { CONNECT_ACC } from "./constraint/actionTypes";
 import { Home } from "./pages/Home";
 import { useDispatch, useSelector } from "react-redux";

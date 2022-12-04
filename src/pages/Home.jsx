@@ -6,7 +6,7 @@ import img1 from "../assets/img/img1.jpg";
 import img2 from "../assets/img/img2.jpg";
 import styled from "@emotion/styled";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import Footer from "../components/Footer";
+import Footer from "../components/AppComponent/Footer";
 import NFT101 from "../components/NFT101";
 
 // declare some constant of campaign

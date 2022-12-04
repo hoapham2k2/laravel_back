@@ -5,7 +5,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { CircularProgress } from "@mui/material";
-import MyNFTInfo from "./NFT_info/NFT_info";
+import MyNFTInfo from "../NFT_info/NFT_info";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,7 +48,7 @@ export default function TabsList(props) {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", height: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -70,10 +70,17 @@ export default function TabsList(props) {
               <CircularProgress />
             </Box>
           ) : (
-            <Box>
-              {props.yourNFT ? (
-                props.yourNFT.map((item, id) => (
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 8,
+              }}
+            >
+              {props.myNFT ? (
+                props.myNFT.map((item, id) => (
                   <MyNFTInfo
+                    key={id}
                     id={item.tokenId}
                     image={item.image}
                     name={item.name}

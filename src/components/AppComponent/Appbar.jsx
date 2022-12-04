@@ -18,12 +18,12 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
-import { ColorModeContext, tokens } from "../theme";
+import { ColorModeContext, tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import EmoStyled from "@emotion/styled";
 
-import logoWeb from "../assets/img/weshare.svg";
+import logoWeb from "../../assets/img/weshare.svg";
 
 // styled search
 const Search = styled("div")(({ theme }) => ({

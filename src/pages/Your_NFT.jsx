@@ -22,13 +22,11 @@ import AvatarImg from "../assets/img/avatar.jpg";
 import cover from "../assets/img/account_cover.png";
 
 import styled from "@emotion/styled";
-import TabsList from "../components/TabList";
+import TabsList from "../components/YourNFTComponent/TabList";
 
 const Your_NFT = () => {
   let { nftList, isLoading, account, marketplaceContract, nftContract } =
     useSelector((state) => state.solidity);
-
-  const [yourNFT, setYourNFT] = useState(false);
 
   // let myNFT = [...nftList];
   let myNFT = nftList.filter(
@@ -42,7 +40,6 @@ const Your_NFT = () => {
   const StyledAccountPages = styled(Box)`
     width: 100%;
     min-height: 100vh;
-    background-color: #333;
 
     .imgContainer {
       width: 100%;

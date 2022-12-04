@@ -11,6 +11,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useSelector } from "react-redux";
 import * as api from "../../apis";
 
+import styled from "@emotion/styled";
+
 function toBase64(arr) {
   //arr = new Uint8Array(arr) if it's an ArrayBuffer
   return btoa(arr.reduce((data, byte) => data + String.fromCharCode(byte), ""));
@@ -38,7 +40,8 @@ export default function MyNFTInfo({
       isRead: false,
     };
     await api.createNoti(noti);
-    window.location.reload();
+    await window.location.reload();
+    await handleClose();
   };
 
   const handleClickOpen = () => {
@@ -47,89 +50,151 @@ export default function MyNFTInfo({
 
   const handleClose = () => {
     setOpen(false);
+    setDesc("");
   };
 
+  const NFTItemStyled = styled(Card)`
+    width: 300px;
+
+    .cardContainer {
+      display: flex;
+      flex-direction: column;
+      .cardImg {
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+
+        .img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+
+          &:hover {
+            transform: scale(1.1);
+            transition: all 0.5s ease;
+          }
+        }
+      }
+
+      .cardContent {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+
+        .cardContent_header {
+          width: 100%;
+          display: flex;
+
+          .contentLeft {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            .title {
+              font-size: 1rem;
+              text-transform: uppercase;
+              letter-spacing: 5px;
+              font-weight: 700;
+            }
+          }
+          .contentRight {
+            align-self: center;
+            .price {
+              width: 100%;
+              text-overfow: ellipsis;
+              font-size: 1.5rem;
+              font-weight: 700;
+              text-transform: uppercase;
+            }
+          }
+        }
+
+        .cardButton {
+          color: lightgreen;
+          font-size: 1.2rem;
+          text-transform: uppercase;
+          font-weight: 700;
+
+          &:hover {
+            background-color: lightgreen;
+            color: white;
+          }
+        }
+      }
+    }
+  `;
+
   return (
-    <Card>
-      <Box sx={{ display: `flex`, padding: `10px` }}>
-        <Box flex={1} sx={{ display: `flex`, alignItems: "center" }}>
+    <NFTItemStyled>
+      <Box className="cardContainer">
+        <Box className="cardImg">
           <img
+            className="img"
             src={`data:image/png;base64,${toBase64(image.buffer.data)}`}
-            alt=""
-            width={230}
-            height={300}
-            style={{ borderRadius: "5px" }}
+            alt="nft_img"
           />
         </Box>
-        <Box
-          flex={1}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          sx={{ padding: `10px` }}
-          height={300}
-        >
-          <Box display="flex">
-            <Box flex={1}>
-              <Typography variant="title2" sx={{ fontWeight: `700` }}>
-                Name
+        <Box className="cardContent">
+          <Box className="cardContent_header">
+            <Box className="contentLeft">
+              <Typography className="id">#{id}</Typography>
+              <Typography className="title" gutterBottom>
+                {name}
               </Typography>
             </Box>
-            <Box flex={1}>
-              <Typography variant="title2">{name}</Typography>
+            <Box className="contentRight">
+              <Typography className="price">{price} ETH</Typography>
             </Box>
           </Box>
-          <Box display="flex">
-            <Box flex={1} sx={{ marginTop: "15px" }}>
-              <Typography variant="title2" sx={{ fontWeight: `700` }}>
-                Description
-              </Typography>
-            </Box>
-            <Box
-              flex={1}
-              sx={{ height: "250px", overflow: "scroll", marginTop: "15px" }}
+          <Box>
+            <Button
+              className="cardButton"
+              variant="outlined"
+              fullWidth
+              onClick={handleClickOpen}
             >
-              <Typography variant="title2">{description}</Typography>
-            </Box>
-          </Box>
-          <Box flex={1}>
-            <Button onClick={handleClickOpen}>Donate this NFT</Button>
+              Donate this NFT
+            </Button>
           </Box>
         </Box>
+
+        {/* the dialog will appear when we click button donate */}
+        <Dialog keepMounted open={open} onClose={handleClose}>
+          <DialogTitle>Transform NFT To System</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To transform NFT please enter short description and submit. We
+              thank you for your contribution.
+            </DialogContentText>
+            <TextField
+              disabled
+              margin="dense"
+              label="NFT Name"
+              value={name}
+              fullWidth
+              variant="standard"
+              sx={{ marginTop: "20px" }}
+            />
+            <TextField
+              disabled
+              autoFocus
+              margin="dense"
+              label="Short Description"
+              value={description}
+              // onChange={(e) => {
+              //   setDesc(e.target.value);
+              // }}
+              fullWidth
+              variant="standard"
+              sx={{ marginTop: "10px" }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={transNFT}>Submit</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Transform NFT To System</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To transform NFT please enter short description and submit. We thank
-            you for your contribution.
-          </DialogContentText>
-          <TextField
-            margin="dense"
-            label="NFT Name"
-            value={name}
-            fullWidth
-            variant="standard"
-            sx={{ marginTop: "20px" }}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Short Description"
-            value={desc}
-            onChange={(e) => {
-              setDesc(e.target.value);
-            }}
-            fullWidth
-            variant="standard"
-            sx={{ marginTop: "10px" }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={transNFT}>Submit</Button>
-        </DialogActions>
-      </Dialog>
-    </Card>
+    </NFTItemStyled>
   );
 }
