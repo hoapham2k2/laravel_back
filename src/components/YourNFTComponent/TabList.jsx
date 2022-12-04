@@ -104,26 +104,6 @@ export default function TabsList(props) {
               }}
             >
               {result}
-              {/* {props.myNFT ? (
-                props.myNFT.map((item, id) => (
-                  <MyNFTInfo
-                    key={id}
-                    id={item.tokenId}
-                    image={item.image}
-                    name={item.name}
-                    description={item.description}
-                    price={item.startPrice}
-                    marketplaceContract={props.marketplaceContract}
-                    nftContract={props.nftContract}
-                    account={props.account}
-                  />
-                ))
-              ) : ( <Typography component={"span"}>
-                  Sorry, you don't have any NFT in your account
-                </Typography>
-               
-              )}
-               */}
             </Box>
           )}
         </Box>

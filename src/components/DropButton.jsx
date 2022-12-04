@@ -17,7 +17,7 @@ export default function DropButton({ setImage }) {
           console.log("Files:", files[0]);
           setImage(files[0]);
         }}
-        onAlert={(message, variant) => console.log(`${variant}: ${message}`)}
+        onAlert={(message, variant) => alert(`${variant}: ${message}`)}
         filesLimit={1}
         showPreviews={true}
         showPreviewsInDropzone={false}

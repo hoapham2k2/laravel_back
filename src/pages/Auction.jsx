@@ -15,7 +15,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { toBase64, toWei, fromWei } from "../utils";
 import DateCountdown from "react-date-countdown-timer";
-export default function Auction() {
+import ErrorPages from "./ErrorPages";
+
+const Auction = () => {
   const [price, setPrice] = useState(0);
   const [isDisplay, setIsDisplay] = useState(false);
   const { nft_id } = useParams();
@@ -96,7 +98,8 @@ export default function Auction() {
   if (!currAuction) return null;
 
   return isLoading ? (
-    <CircularProgress />
+    // <CircularProgress />
+    <ErrorPages />
   ) : (
     <Box sx={{ padding: "16px 50px", height: "100%" }}>
       <Box
@@ -240,4 +243,6 @@ export default function Auction() {
       </Box>
     </Box>
   );
-}
+};
+
+export default Auction;
