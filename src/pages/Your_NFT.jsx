@@ -37,6 +37,8 @@ const Your_NFT = () => {
   console.log("nftlist: ", nftList);
   // tabs list initiabl state and
 
+  console.log("account", account);
+
   const StyledAccountPages = styled(Box)`
     width: 100%;
     min-height: 100vh;
@@ -93,7 +95,7 @@ const Your_NFT = () => {
       {/* a box to contain info */}
       <Box className="infoContainer">
         <Typography variant="h5" fontWeight={700}>
-          Account User
+          Account Info
         </Typography>
         <Box className="infoAccount">
           <img
@@ -102,7 +104,7 @@ const Your_NFT = () => {
             className="infoAccountIcon"
           />
           <Typography variant="body2" className="infoAccountAddress">
-            0xBbe6e6dD32cDF27BaDe4F158940A0f485BB4D067
+            {account ? account : "0x0000000000000000000000000000000000000000"}
           </Typography>
         </Box>
       </Box>
