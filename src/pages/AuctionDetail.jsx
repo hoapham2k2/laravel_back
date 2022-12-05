@@ -416,10 +416,10 @@ const BidHistory = () => {
             }}
           >
             <QueryBuilder />
-            <Typography variant="h5">
+            <Typography variant="body1">
               No events have been recorded yet
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="body1">
               Check back later to see the latest bids
             </Typography>
           </Box>
@@ -471,7 +471,7 @@ const Other = () => {
               justifyContent: "center",
             }}
           >
-            <Typography variant="h5">
+            <Typography variant="body1">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
               ullam temporibus tempora soluta debitis voluptates explicabo.
               Quaerat, minima numquam quia quas dolorem deleniti, quod porro eum
