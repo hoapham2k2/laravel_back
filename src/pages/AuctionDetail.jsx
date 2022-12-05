@@ -285,7 +285,8 @@ const StyledCampaignInfo = styled(Card)`
     .info_price {
       display: flex;
       align-items: flex-end;
-      gap: 12px;
+      justify-content: space-between;
+      gap: 100px;
       .price--left {
         .price_title {
           font-weight: bold;
@@ -311,7 +312,7 @@ const StyledCampaignInfo = styled(Card)`
       .price--right {
         flex: 1;
         .inputBid {
-          width: 50%;
+          width: 100%;
           height: 100%;
           & .MuiInputBase-root {
             height: 100%;
