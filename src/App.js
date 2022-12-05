@@ -19,10 +19,13 @@ import Your_NFT from "./pages/Your_NFT";
 import createTheme from "@mui/material/styles/createTheme";
 import ErrorPages from "./pages/ErrorPages";
 import HistoryTransaction from "./pages/HistoryTransaction.jsx/HistoryTransaction";
+import { HomeMax } from "@mui/icons-material";
+import AuctionDetail from "./pages/AuctionDetail";
+// import AuctionDetail from "./pages/AuctionDetail";
 
 const App = () => {
   const dispatch = useDispatch();
-  let accounts;
+  let accounts; 
 
   const web3Handler = async () => {
     // connect metamask
@@ -95,9 +98,12 @@ const App = () => {
               <Switch>
                 <Route path="/create_nft" exact component={create_nft} />
                 <Route path="/history" exact component={HistoryTransaction} />
-                <Route path="/auction/:nft_id" exact component={Auction} />
+                {/* <Route path="/auction/:nft_id" exact component={Auction} /> */}
+                <Route path="/auction-detail" exact component={AuctionDetail} />
+
                 <Route path="/auction" exact component={Auction} />
                 <Route path="/list_nft" exact component={Your_NFT} />
+                <Route path="/home" exact component={()=> <Redirect to="/" />}/>
                 <Route path="/" exact component={Home} />
                 <Route path="*" component={ErrorPages} />
               </Switch>

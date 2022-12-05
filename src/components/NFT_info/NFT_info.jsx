@@ -91,6 +91,9 @@ export default function MyNFTInfo({
             flex-direction: column;
 
             .title {
+              width: 150px;
+              overflow: hidden;
+              text-overflow: ellipsis;
               font-size: 1rem;
               text-transform: uppercase;
               letter-spacing: 5px;
@@ -167,7 +170,6 @@ export default function MyNFTInfo({
               thank you for your contribution.
             </DialogContentText>
             <TextField
-              disabled
               margin="dense"
               label="NFT Name"
               value={name}
@@ -176,14 +178,13 @@ export default function MyNFTInfo({
               sx={{ marginTop: "20px" }}
             />
             <TextField
-              disabled
               autoFocus
               margin="dense"
               label="Short Description"
               value={description}
-              // onChange={(e) => {
-              //   setDesc(e.target.value);
-              // }}
+              onChange={(e) => {
+                setDesc(e.target.value);
+              }}
               fullWidth
               variant="standard"
               sx={{ marginTop: "10px" }}

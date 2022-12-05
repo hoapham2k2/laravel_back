@@ -16,7 +16,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HomeIcon from "@mui/icons-material/Home";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 // import logo from "../../assets/litecoin.svg";
@@ -66,7 +66,7 @@ export default function MySidebar() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          gap: "20px",
+          gap: "40px",
         }}
       >
         <Tooltip title="Home" placement="right-end">
@@ -79,14 +79,14 @@ export default function MySidebar() {
             <HomeIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="List NFT" placement="right-end">
+        <Tooltip title="Account" placement="right-end">
           <IconButton
             onClick={() => {
               history.push("/list_nft");
             }}
             sx={pathname == "list_nft" ? backLink : {}}
           >
-            <FormatListBulletedIcon />
+            <AccountCircleIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="History" placement="right-end">
@@ -99,16 +99,7 @@ export default function MySidebar() {
             <ReceiptLongIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Auction" placement="right-end">
-          <IconButton
-            onClick={() => {
-              history.push("/auction");
-            }}
-            sx={pathname == "auction" ? backLink : {}}
-          >
-            <ShoppingCartCheckoutIcon />
-          </IconButton>
-        </Tooltip>
+     
         <Tooltip title="Create NFT" placement="right-end">
           <IconButton
             onClick={() => {
