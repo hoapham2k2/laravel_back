@@ -30,6 +30,7 @@ import {
   TimelineRounded,
 } from "@mui/icons-material";
 import ListIcon from "@mui/icons-material/List";
+import Footer from "../components/AppComponent/Footer";
 
 // both page
 const AuctionDetailStyle = styled(Box)`
@@ -485,22 +486,25 @@ const Other = () => {
 
 const AuctionDetail = () => {
   return (
-    <AuctionDetailStyle>
-      <Box className="leftBox">
-        {/* slider */}
-        <ImgSlider />
+    <>
+      <AuctionDetailStyle>
+        <Box className="leftBox">
+          {/* slider */}
+          <ImgSlider />
 
-        {/* description */}
-        <CardDescription />
-      </Box>
-      <Box className="rightBox">
-        <Header />
-        <HeaderTitle />
-        <CampaignInfo />
-        <BidHistory />
-        <Other />
-      </Box>
-    </AuctionDetailStyle>
+          {/* description */}
+          <CardDescription />
+        </Box>
+        <Box className="rightBox">
+          <Header />
+          <HeaderTitle />
+          <CampaignInfo />
+          <BidHistory />
+          <Other />
+        </Box>
+      </AuctionDetailStyle>
+      <Footer />
+    </>
   );
 };
 
