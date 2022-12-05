@@ -14,19 +14,55 @@ import lesson9 from "../assets/img/ethereum_topic.jpg";
 export default function NFT101(props) {
   var items = [
     [
-      { title: "What is an NFT?", img: lesson1 },
-      { title: "What is a crypto wallet?", img: lesson2 },
-      { title: "What are blockchain gas fees?", img: lesson3 },
+      {
+        title: "What is an NFT?",
+        img: lesson1,
+        URL: "https://opensea.io/learn/what-are-nfts",
+      },
+      {
+        title: "What is a crypto wallet?",
+        img: lesson2,
+        URL: "https://opensea.io/learn/what-is-crypto-wallet",
+      },
+      {
+        title: "What are blockchain gas fees?",
+        img: lesson3,
+        URL: "https://opensea.io/learn/nft-gas-fees",
+      },
     ],
     [
-      { title: "How to buy an NFT", img: lesson4 },
-      { title: "How to create an NFT on Opensea", img: lesson5 },
-      { title: "How to sell an NFT on Opensea", img: lesson6 },
+      {
+        title: "How to buy an NFT",
+        img: lesson4,
+        URL: "https://opensea.io/learn/how-to-buy-nft",
+      },
+      {
+        title: "How to create an NFT on Opensea",
+        img: lesson5,
+        URL: "https://opensea.io/learn/how-to-create-an-nft",
+      },
+      {
+        title: "How to sell an NFT on Opensea",
+        img: lesson6,
+        URL: "https://opensea.io/learn/how-to-sell-nfts",
+      },
     ],
     [
-      { title: "What is minting?", img: lesson7 },
-      { title: "Who is Opensea?", img: lesson8 },
-      { title: "What is Ethereum?", img: lesson9 },
+      {
+        title: "What is minting?",
+        img: lesson7,
+        URL: "https://opensea.io/learn/what-is-minting-nft",
+      },
+      {
+        title: "Who is Opensea?",
+        img: lesson8,
+        URL: "https://opensea.io/learn/who-is-opensea",
+      },
+      {
+        title: "What is Ethereum?",
+        img: lesson9,
+        URL: "https://coin98.net/ethereum-la-gi",
+      },
     ],
   ];
 
@@ -76,6 +112,7 @@ export default function NFT101(props) {
               justifyContent: "space-between",
               borderRadius: "16px",
             }}
+            onClick={() => window.open(item.URL, "_blank")}
           >
             <Box
               sx={{

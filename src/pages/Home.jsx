@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import Footer from "../components/AppComponent/Footer";
 import NFT101 from "../components/NFT101";
+import RecentNFT from "../components/AppComponent/RecentNFT";
 
 // declare some constant of campaign
 const BORDER = "1px solid #E5E5E5";
@@ -68,97 +69,6 @@ const ItemCampaignDemo = () => {
 
 //  styled img and both nft
 
-const StyledImg = styled.img`
-  width: ${FULL_WIDTH};
-  height: ${FULL_WIDTH};
-  object-fit: cover;
-  &:hover {
-    transform: scale(1.1);
-    transition: all 0.3s ease-in-out;
-  }
-`;
-
-const NFTItem = () => {
-  return (
-    <Card>
-      <Box
-        sx={{
-          flex: 1,
-          width: 300,
-          height: 300,
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <StyledImg src={img1} />
-      </Box>
-      <Box sx={{ display: "block", padding: "16px" }}>
-        <Box sx={{ ...SETTING_FLEX_COL }}>
-          <Typography
-            sx={{
-              fontSize: "1.2rem",
-              textTransform: "uppercase",
-              letterSpacing: "5px",
-              fontWeight: 700,
-            }}
-          >
-            The Lonely Guy
-          </Typography>
-          <Box
-            sx={{
-              width: FULL_WIDTH,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-            }}
-          >
-            <Typography variant="subtitle1">3:20:19s</Typography>
-            <Typography
-              variant="h5"
-              fontWeight={700}
-              sx={{ textTransform: "uppercase", color: "lightgreen" }}
-            >
-              5.0 ETH
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-    </Card>
-  );
-};
-
-const NFTList = () => {
-  return (
-    <Box mt={PART_MARGIN_TOP} sx={SETTING_FLEX_COL}>
-      <Box
-        mb={TEXT_MARGIN_BOTTOM}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography variant="h4">NFT</Typography>
-        <Button variant="text">View all</Button>
-      </Box>
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          rowGap: "50px",
-        }}
-      >
-        <NFTItem />
-        <NFTItem />
-        <NFTItem />
-        <NFTItem />
-      </Box>
-    </Box>
-  );
-};
-
 // Campaign List
 
 const CampaignList = () => {
@@ -172,7 +82,7 @@ const CampaignList = () => {
           mb: 1,
         }}
       >
-        <Typography variant="h4">New Campaign</Typography>
+        <Typography variant="h4">New Auction</Typography>
         <Button variant="text">See more</Button>
       </Box>
 
@@ -234,7 +144,7 @@ export const Home = () => {
           </HeaderTitleStyled>
           <Slider />
         </HeaderPages>
-        <NFTList />
+        <RecentNFT />
         <CampaignList />
         {/* nft 101 */}
         <NFT101 />
