@@ -38,13 +38,13 @@ class CampaignController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'desc' => 'required',
-            'img1_url' => 'required',
-            'img2_url' => 'required',
-            'zone' => 'required'
-        ]);
+        // $request->validate([
+        //     'title' => 'required',
+        //     'desc' => 'required',
+        //     'img1_url' => 'required',
+        //     'img2_url' => 'required',
+        //     'zone' => 'required'
+        // ]);
 
         $campaign = Campaign::create($request->all());
 
@@ -85,17 +85,17 @@ class CampaignController extends Controller
      */
     public function update(Request $request, Campaign $campaign)
     {
-        $request->validate([
-            'title' => 'required',
-            'desc' => 'required',
-            'img1_url' => 'required',
-            'img2_url' => 'required',
-            'zone' => 'required'
-        ]);
+        // $request->validate([
+        //     'title' => 'required',
+        //     'desc' => 'required',
+        //     'img1_url' => 'required',
+        //     'img2_url' => 'required',
+        //     'zone' => 'required'
+        // ]);
         
         Log::info($request->input('title'));
         $campaign->title = $request->input('title');
-        $campaign->desc = $request->input('desc');
+        $campaign->description = $request->input('description');
         $campaign->img1_url = $request->input('img1_url');
         $campaign->img2_url = $request->input('img2_url');
         $campaign->zone = $request->input('zone');
