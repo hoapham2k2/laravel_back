@@ -10,6 +10,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -282,23 +283,41 @@ const StyledCampaignInfo = styled(Card)`
     }
 
     .info_price {
-      .price_title {
-        font-weight: bold;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 100px;
+      .price--left {
+        .price_title {
+          font-weight: bold;
+        }
+
+        .price {
+          margin-top: 10px;
+          display: flex;
+          gap: 12px;
+          align-items: flex-end;
+
+          .price--eth {
+            font-weight: 700;
+            font-size: 2rem;
+          }
+          .price--usd {
+            font-size: 1.5rem;
+            color: #a3a3a3;
+          }
+        }
       }
 
-      .price {
-        margin-top: 10px;
-        display: flex;
-        gap: 12px;
-        align-items: flex-end;
-
-        .price--eth {
-          font-weight: 700;
-          font-size: 2rem;
-        }
-        .price--usd {
-          font-size: 1.5rem;
-          color: #a3a3a3;
+      .price--right {
+        flex: 1;
+        .inputBid {
+          width: 100%;
+          height: 100%;
+          & .MuiInputBase-root {
+            height: 100%;
+            font-size: 2rem;
+          }
         }
       }
     }
@@ -348,26 +367,37 @@ const CampaignInfo = () => {
         </Box>
         <Divider className="divider" />
         <Box className="info_price">
-          <Typography className="price_title" variant="h5">
-            Current bid
-          </Typography>
-          <Box className="price">
-            <Typography className="price--eth" variant="h4">
-              0.1 ETH
+          <Box className="price--left">
+            <Typography className="price_title" variant="h5">
+              Current bid
             </Typography>
-            <Typography className="price--usd" variant="h6">
-              11 USB
-            </Typography>
+            <Box className="price">
+              <Typography className="price--eth" variant="h4">
+                0.1 ETH
+              </Typography>
+              <Typography className="price--usd" variant="h6">
+                11 USB
+              </Typography>
+            </Box>
           </Box>
-          <Button
-            className="bid_button"
-            fullWidth
-            variant="contained"
-            color="secondary"
-          >
-            Bid now
-          </Button>
+          <Box className="price--right">
+            <TextField
+              className="inputBid"
+              label="Bid"
+              variant="outlined"
+              type="number"
+              placeholder="input your bid"
+            />
+          </Box>
         </Box>
+        <Button
+          className="bid_button"
+          fullWidth
+          variant="contained"
+          color="secondary"
+        >
+          Bid now
+        </Button>
       </Box>
     </StyledCampaignInfo>
   );
