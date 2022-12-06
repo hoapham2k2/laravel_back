@@ -34,6 +34,7 @@ export const fetchSolidity = (accounts)  => async (dispatch) => {
       // get uri url from nft contract
       const uri = await nft.tokenURI(item.tokenId);
       // use uri to fetch the nft metadata stored on ipfs
+      console.log(uri)
       const response = await fetch(uri);
       // console.log("response nft number ", i, ": ", response);
       const metadata = await response.json();
@@ -62,7 +63,7 @@ export const fetchSolidity = (accounts)  => async (dispatch) => {
         highestBidder: item.highestBidder
       }); 
   } 
-
+  console.log(items)
   dispatch({
     type: FETCH_SOLIDITY,
     payload: {

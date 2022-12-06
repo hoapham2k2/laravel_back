@@ -113,7 +113,7 @@ const ItemAuction = ({ auc }) => {
           className="buttonSeeMore"
           variant="outlined"
           onClick={() => {
-            history.push(`/auction/${auc?.id}`);
+            history.push(`/auction/${auc?.nft_id}`);
           }}
         >
           See more

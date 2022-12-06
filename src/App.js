@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSolidity } from "./actions/solidity";
 import "./App.css";
 import Auction from "./pages/Auction";
-import Your_NFT from "./pages/Your_NFT";
+import Account from "./pages/Account";
 import createTheme from "@mui/material/styles/createTheme";
 import ErrorPages from "./pages/ErrorPages";
 import HistoryTransaction from "./pages/HistoryTransaction.jsx/HistoryTransaction";
@@ -103,7 +103,7 @@ const App = () => {
                 <Route path="/auction-detail" exact component={AuctionDetail} />
 
                 {/* <Route path="/auction" exact component={Auction} /> */}
-                <Route path="/list_nft" exact component={Your_NFT} />
+                <Route path="/account" exact component={Account} />
                 <Route path="/all-auction" exact component={AllAuction} />
                 <Route
                   path="/home"

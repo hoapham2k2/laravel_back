@@ -10,9 +10,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  TextField,
   Tooltip,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
@@ -83,7 +83,7 @@ const StyledImgSlider = styled(Card)`
   }
 `;
 
-const ImgSlider = () => {
+const ImgSlider = ({items}) => {
   return (
     <>
       <Carousel
@@ -119,16 +119,7 @@ const Item = (props) => {
   );
 };
 
-var items = [
-  // {
-  //   name: "anh campaigm #1",
-  //   img: img1,
-  // },
-  // {
-  //   name: "anh nft #1",
-  //   img: img2,
-  // },
-];
+
 
 // card Description
 const StyledCardDescription = styled(Card)`
@@ -159,7 +150,7 @@ const StyledCardDescription = styled(Card)`
   }
 `;
 
-const CardDescription = ({campDesc, nftDesc}) => {
+const CardDescription = ({ campDesc, nftDesc, nftName }) => {
   return (
     <StyledCardDescription>
       <Box className="cardContainer">
@@ -242,7 +233,7 @@ const StyledHeaderTitle = styled(Box)`
   }
 `;
 
-const HeaderTitle = ({title}) => {
+const HeaderTitle = ({ title }) => {
   return (
     <StyledHeaderTitle>
       <Typography className="title" variant="h4">
@@ -311,12 +302,13 @@ const StyledCampaignInfo = styled(Card)`
 
       .price--right {
         flex: 1;
+        align-items: center;
         .inputBid {
           width: 100%;
-          height: 100%;
+          height: 60px;
           & .MuiInputBase-root {
             height: 100%;
-            font-size: 2rem;
+            font-size: 1.2rem;
           }
         }
       }
@@ -338,7 +330,7 @@ const StyledCampaignInfo = styled(Card)`
   }
 `;
 
-const CampaignInfo = () => {
+const CampaignInfo = ({highestBid}) => {
   return (
     <StyledCampaignInfo className="campaign_info">
       <Box className="infoContainer">
@@ -373,10 +365,10 @@ const CampaignInfo = () => {
             </Typography>
             <Box className="price">
               <Typography className="price--eth" variant="h4">
-                0.1 ETH
+                {highestBid} ETH
               </Typography>
               <Typography className="price--usd" variant="h6">
-                11 USB
+                11 USD
               </Typography>
             </Box>
           </Box>
@@ -386,7 +378,6 @@ const CampaignInfo = () => {
               label="Bid"
               variant="outlined"
               type="number"
-              placeholder="input your bid"
             />
           </Box>
         </Box>
@@ -520,41 +511,57 @@ const AuctionDetail = () => {
     (state) => state.solidity
   );
   const { nft_id } = useParams();
+  console.log(nft_id)
 
   const nft = nftList.filter((nft) => nft.id == nft_id)[0];
-  
-  currAuction.nft = nft;
+    let items=[]
+  if (currAuction && nft) {
+    currAuction.nft = nft;
+    items.push({ name: "img1", img: currAuction.img1_url });
+    items.push({
+      name: "nft image",
+      img: `data:image/png;base64,${toBase64(
+        currAuction.nft.image.buffer.data
+      )}`,
+    });
+  }
 
- if(currAuction) {
-  items.push({name: 'img1', img: currAuction.img1_url})
-  items.push({name: 'nft image', img: `data:image/png;base64,${toBase64(currAuction.nft.image.buffer.data)}`})
- }
-
+  console.log(currAuction)
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log(1234234)  
     dispatch(getAuctionById(nft_id));
   }, [nft_id]);
 
-
   return (
     <>
-      <AuctionDetailStyle>
-        <Box className="leftBox">
-          {/* slider */}
-          <ImgSlider />
+      {!currAuction || !nft ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <AuctionDetailStyle>
+            <Box className="leftBox">
+              {/* slider */}
+              <ImgSlider items={items}/>
 
-          {/* description */}
-          <CardDescription campDesc={currAuction?.description} nftDesc={''}/>
-        </Box>
-        <Box className="rightBox">
-          <Header />
-          <HeaderTitle title={currAuction?.title}/>
-          <CampaignInfo />
-          <BidHistory />
-          <Other />
-        </Box>
-      </AuctionDetailStyle>
-      <Footer />
+              {/* description */}
+              <CardDescription
+                campDesc={currAuction?.description}
+                nftDesc={currAuction?.nft.description}
+                nftName={currAuction.nft.name}
+              />
+            </Box>
+            <Box className="rightBox">
+              <Header />
+              <HeaderTitle title={currAuction.title} />
+              <CampaignInfo highestBid={currAuction.nft.highestBid}/>
+              <BidHistory />
+              <Other />
+            </Box>
+          </AuctionDetailStyle>
+          <Footer />
+        </>
+      )}
     </>
   );
 };

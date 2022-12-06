@@ -82,7 +82,7 @@ export default function MySidebar() {
         <Tooltip title="Account" placement="right-end">
           <IconButton
             onClick={() => {
-              history.push("/list_nft");
+              history.push("/account");
             }}
             sx={pathname == "list_nft" ? backLink : {}}
           >
