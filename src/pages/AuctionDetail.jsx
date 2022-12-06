@@ -5,6 +5,7 @@ import {
   Collapse,
   Divider,
   IconButton,
+  TextField,
   List,
   ListItemButton,
   ListItemIcon,
@@ -12,7 +13,12 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useHistory, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getAuctionById } from "../actions/auction";
+import { toBase64, toWei, fromWei } from "../utils";
+
 import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
 import img1 from "../assets/img/slider1.jpg";
@@ -112,15 +118,15 @@ const Item = (props) => {
   );
 };
 
-const items = [
-  {
-    name: "anh campaigm #1",
-    img: img1,
-  },
-  {
-    name: "anh nft #1",
-    img: img2,
-  },
+var items = [
+  // {
+  //   name: "anh campaigm #1",
+  //   img: img1,
+  // },
+  // {
+  //   name: "anh nft #1",
+  //   img: img2,
+  // },
 ];
 
 // card Description
@@ -152,7 +158,7 @@ const StyledCardDescription = styled(Card)`
   }
 `;
 
-const CardDescription = () => {
+const CardDescription = ({campDesc, nftDesc}) => {
   return (
     <StyledCardDescription>
       <Box className="cardContainer">
@@ -165,10 +171,7 @@ const CardDescription = () => {
 
         <Divider className="divider" />
         <Typography className="content" variant="body1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-          excepturi magni temporibus ducimus hic incidunt. Dolor sequi repellat
-          officia dicta iure eos maiores labore cum. Dolorum perferendis
-          voluptatem quibusdam aliquam!
+          {campDesc}
         </Typography>
         <Divider className="divider" />
 
@@ -180,10 +183,7 @@ const CardDescription = () => {
         </Box>
         <Divider className="divider" />
         <Typography className="content" variant="body1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-          excepturi magni temporibus ducimus hic incidunt. Dolor sequi repellat
-          officia dicta iure eos maiores labore cum. Dolorum perferendis
-          voluptatem quibusdam aliquam!
+          {nftDesc}
         </Typography>
       </Box>
     </StyledCardDescription>
@@ -241,14 +241,14 @@ const StyledHeaderTitle = styled(Box)`
   }
 `;
 
-const HeaderTitle = () => {
+const HeaderTitle = ({title}) => {
   return (
     <StyledHeaderTitle>
       <Typography className="title" variant="h4">
         #02545
       </Typography>
       <Typography className="campaign_name" variant="h3">
-        Saving the african child
+        {title}
       </Typography>
     </StyledHeaderTitle>
   );
@@ -485,6 +485,27 @@ const Other = () => {
 };
 
 const AuctionDetail = () => {
+  const { currAuction } = useSelector((state) => state.auction);
+  const { nftList, marketplaceContract, isLoading } = useSelector(
+    (state) => state.solidity
+  );
+  const { nft_id } = useParams();
+
+  const nft = nftList.filter((nft) => nft.id == nft_id)[0];
+  
+  currAuction.nft = nft;
+
+ if(currAuction) {
+  items.push({name: 'img1', img: currAuction.img1_url})
+  items.push({name: 'nft image', img: `data:image/png;base64,${toBase64(currAuction.nft.image.buffer.data)}`})
+ }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAuctionById(nft_id));
+  }, [nft_id]);
+
+
   return (
     <>
       <AuctionDetailStyle>
@@ -493,11 +514,11 @@ const AuctionDetail = () => {
           <ImgSlider />
 
           {/* description */}
-          <CardDescription />
+          <CardDescription campDesc={currAuction?.description} nftDesc={''}/>
         </Box>
         <Box className="rightBox">
           <Header />
-          <HeaderTitle />
+          <HeaderTitle title={currAuction?.title}/>
           <CampaignInfo />
           <BidHistory />
           <Other />

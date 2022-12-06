@@ -10,6 +10,7 @@ import Footer from "../components/AppComponent/Footer";
 import NFT101 from "../components/NFT101";
 import RecentNFT from "../components/AppComponent/RecentNFT";
 
+import { useHistory } from "react-router-dom";
 // declare some constant of campaign
 const BORDER = "1px solid #E5E5E5";
 const CARD_BORDER_RADIUS = "16px";
@@ -72,6 +73,7 @@ const ItemCampaignDemo = () => {
 // Campaign List
 
 const CampaignList = () => {
+  const history = useHistory()
   return (
     <Box mt={3}>
       {/* information of campaign list demo */}
@@ -83,7 +85,7 @@ const CampaignList = () => {
         }}
       >
         <Typography variant="h4">New Auction</Typography>
-        <Button variant="text">See more</Button>
+        <Button variant="text" onClick={()=>{history.push('/all-auction')}}>See more</Button>
       </Box>
 
       <Grid2 container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -135,6 +137,7 @@ const HomePages = styled(Box)`
 const HeaderPages = styled(Box)``;
 
 export const Home = () => {
+
   return (
     <>
       <HomePages>

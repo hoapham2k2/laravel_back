@@ -99,7 +99,7 @@ const App = () => {
               <Switch>
                 <Route path="/create_nft" exact component={create_nft} />
                 <Route path="/history" exact component={HistoryTransaction} />
-                {/* <Route path="/auction/:nft_id" exact component={Auction} /> */}
+                <Route path="/auction/:nft_id" exact component={AuctionDetail} />
                 <Route path="/auction-detail" exact component={AuctionDetail} />
 
                 {/* <Route path="/auction" exact component={Auction} /> */}

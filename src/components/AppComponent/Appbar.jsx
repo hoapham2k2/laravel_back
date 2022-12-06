@@ -17,7 +17,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
 import { useDispatch, useSelector } from "react-redux";
-import { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { ColorModeContext, tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
 import { Button } from "@mui/material";
@@ -94,13 +94,15 @@ export default function PrimarySearchAppBar({ web3Handler }) {
   window.addEventListener("scroll", changeNavbarColor);
 
   const account = useSelector((state) => state.solidity.account);
+
+  const history = useHistory()
   return (
     <StyledAppBar
       color="transparent"
       className={colorChange ? "navbar colorChange" : "navbar"}
     >
       <Toolbar sx={{ display: "flex" }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }} onClick={()=>{history.push('/')}}>
           <img src={logoWeb} alt="logo" style={{ width: 40, height: 40 }} />
           <Typography
             variant="h5"
@@ -125,7 +127,8 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             flex: 1,
             marginLeft: "auto",
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
+            
           }}
         >
           {/* <Typography
@@ -139,7 +142,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             <BorderColorIcon sx={{ marginRight: "4px" }} />
             Create
           </Typography> */}
-          <Button startIcon={<BorderColorIcon />}>Create</Button>
+          {/* <Button startIcon={<BorderColorIcon />}>Create</Button> */}
           <Button startIcon={<BloodtypeIcon />}>Donate</Button>
 
           <Typography
@@ -151,6 +154,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
               justifyContent: "space-between",
               alignItems: "center",
               marginRight: "30px",
+              marginLeft: "40px",
               cursor: "pointer",
             }}
           >

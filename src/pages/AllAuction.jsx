@@ -1,5 +1,8 @@
-import { Box, Button, Card, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Card, Typography, CircularProgress } from "@mui/material";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuction } from "../actions/auction";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../components/AppComponent/Footer";
 import imgAuctionItem from "../assets/img/slider1.jpg";
@@ -76,15 +79,17 @@ const StyledItemAuction = styled(Card)`
   }
 `;
 
-const ItemAuction = () => {
+const ItemAuction = ({ auc }) => {
+  const history = useHistory();
+
   return (
     <StyledItemAuction>
       <Box className="cardContainer">
-        <img src={imgAuctionItem} alt="auction_img" />
+        <img src={auc?.img1_url} alt="auction_img" />
       </Box>
       <Box className="cardContent">
         <Typography variant="h6" className="cardTitle">
-          Helping children in Africa
+          {auc?.title}
         </Typography>
         <Typography
           className="cardDescription"
@@ -97,17 +102,20 @@ const ItemAuction = () => {
           }}
           variant="body1"
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam
-          nam suscipit, ab aspernatur beatae sint asperiores laboriosam
-          consequuntur! Ipsam itaque maiores quam maxime. Molestias accusantium
-          soluta corrupti id animi. Quo.
+          {auc?.description}
         </Typography>
 
         <Typography variant="body1" className="auctionTimeLeft">
           Time left: 1 day 2 hours 30 minutes
         </Typography>
 
-        <Button className="buttonSeeMore" variant="outlined">
+        <Button
+          className="buttonSeeMore"
+          variant="outlined"
+          onClick={() => {
+            history.push(`/auction/${auc?.id}`);
+          }}
+        >
           See more
         </Button>
       </Box>
@@ -126,6 +134,13 @@ const StyledListAuction = styled(Box)`
 `;
 
 const AllAuction = () => {
+  const { auctions, isLoading } = useSelector((state) => state.auction);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAuction());
+  }, []);
+
   return (
     <>
       <StyledAllAuction>
@@ -133,11 +148,15 @@ const AllAuction = () => {
           <Typography className="title">All Auction</Typography>
         </HeaderTitleStyled>
         {/* <ItemAuction /> */}
-        <StyledListAuction>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => {
-            return <ItemAuction key={index} />;
-          })}
-        </StyledListAuction>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <StyledListAuction>
+            {auctions.map((auc, index) => {
+              return <ItemAuction key={index} auc={auc} />;
+            })}
+          </StyledListAuction>
+        )}
       </StyledAllAuction>
       <Footer />
     </>
