@@ -61,7 +61,7 @@ class AuctionController extends Controller
      */
     public function show($id)
     {
-        $auction = DB::table('auctions')->join('campaigns', 'auctions.campaign_id', '=', 'campaigns.id')->select('auctions.*', 'campaigns.*')->get()->first();
+        $auction = DB::table('auctions')->join('campaigns', 'auctions.campaign_id', '=', 'campaigns.id')->select('auctions.*', 'campaigns.*')->where('nft_id', $id)->get()->first();
 
         return $auction;
     }
