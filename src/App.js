@@ -57,7 +57,7 @@ const App = () => {
   useEffect(() => {
     web3Handler();
     dispatch(fetchSolidity());
-  });
+  },[accounts]);
 
   // darkmode
   const [darkMode, setDarkMode] = useState(true);

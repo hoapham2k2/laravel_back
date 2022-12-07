@@ -12,11 +12,106 @@ import { useSelector } from "react-redux";
 import * as api from "../../apis";
 
 import styled from "@emotion/styled";
-
 function toBase64(arr) {
   //arr = new Uint8Array(arr) if it's an ArrayBuffer
   return btoa(arr.reduce((data, byte) => data + String.fromCharCode(byte), ""));
 }
+
+const NFTItemStyled = styled(Card)`               
+width: 300px;
+
+.wrapper{
+
+  width: 100%;
+  height: 100%;
+  
+
+  &:hover{
+    .cardButton{
+      top: 0;
+        }
+
+  }
+}
+
+
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+ 
+  .cardImg {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+
+    .img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+      &:hover {
+        transform: scale(1.1);
+        transition: all 0.5s ease;
+      }
+    }
+  }
+ 
+
+  .cardContent {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+   
+        
+    
+    .cardContent_header {
+      width: 100%;
+
+      .contentLeft {
+        .title {
+          width: 350px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 1rem;
+          text-transform: uppercase;
+          letter-spacing: 5px;
+          font-weight: 700;
+        }
+      }
+      .contentRight {
+        align-self: center;
+        .price {
+          width: 100%;
+          text-overfow: ellipsis;
+          font-size: 1.5rem;
+          font-weight: 700;
+          text-transform: uppercase;
+        }
+      }
+    }
+    
+    .hiddenButtonBox:hover > .cardButton {
+      top: 0;
+    }
+    .cardButton {
+      color: lightgreen;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      transition: all 0.3s ease-out;
+      top: 170%;
+      position: relative;
+      height: 100%;
+      &:hover {
+        background-color: lightgreen;
+        color: white;
+      }
+    }
+  }
+}
+`;
 
 export default function MyNFTInfo({
   id,
@@ -32,16 +127,18 @@ export default function MyNFTInfo({
   const [desc, setDesc] = useState("");
 
   const transNFT = async () => {
-    await (await marketplaceContract.transItem(nftContract.address, id)).wait();
-    const noti = {
+    const a = await (await marketplaceContract.transItem(nftContract.address, id)).wait();
+    console.log(a)
+    const trans = {
+      trans_id: id,
       account_address: account,
-      title: "Donate NFT to system",
+      amount: 0,
+      type: 0,  //0: donate nft  |  1: donate eth  | 2: auction nft
       description: desc,
-      isRead: false,
     };
-    await api.createNoti(noti);
-    await window.location.reload();
-    await handleClose();
+    await api.createTrans(trans);
+    window.location.reload();
+    handleClose();
   };
 
   const handleClickOpen = () => {
@@ -52,112 +149,47 @@ export default function MyNFTInfo({
     setOpen(false);
     setDesc("");
   };
-
-  const NFTItemStyled = styled(Card)`
-    width: 300px;
-
-    .cardContainer {
-      display: flex;
-      flex-direction: column;
-      .cardImg {
-        width: 100%;
-        height: 300px;
-        overflow: hidden;
-
-        .img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-
-          &:hover {
-            transform: scale(1.1);
-            transition: all 0.5s ease;
-          }
-        }
-      }
-
-      .cardContent {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-
-        .cardContent_header {
-          width: 100%;
-          display: flex;
-
-          .contentLeft {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-
-            .title {
-              width: 150px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              font-size: 1rem;
-              text-transform: uppercase;
-              letter-spacing: 5px;
-              font-weight: 700;
-            }
-          }
-          .contentRight {
-            align-self: center;
-            .price {
-              width: 100%;
-              text-overfow: ellipsis;
-              font-size: 1.5rem;
-              font-weight: 700;
-              text-transform: uppercase;
-            }
-          }
-        }
-
-        .cardButton {
-          color: lightgreen;
-          font-size: 1.2rem;
-          text-transform: uppercase;
-          font-weight: 700;
-
-          &:hover {
-            background-color: lightgreen;
-            color: white;
-          }
-        }
-      }
-    }
-  `;
+  
+ 
 
   return (
     <NFTItemStyled>
-      <Box className="cardContainer">
+      <Box className="wrapper">
+
+      <Box
+        className="cardContainer"
+        
+        >
         <Box className="cardImg">
           <img
             className="img"
             src={`data:image/png;base64,${toBase64(image.buffer.data)}`}
             alt="nft_img"
-          />
+            />
         </Box>
         <Box className="cardContent">
           <Box className="cardContent_header">
             <Box className="contentLeft">
-              <Typography className="id">#{id}</Typography>
+              {/* <Typography className="id">#{id}</Typography> */}
               <Typography className="title" gutterBottom>
                 {name}
+                {"  #"}
+                {id}
               </Typography>
             </Box>
             <Box className="contentRight">
               <Typography className="price">{price} ETH</Typography>
             </Box>
           </Box>
-          <Box>
-            <Button
-              className="cardButton"
-              variant="outlined"
-              fullWidth
-              onClick={handleClickOpen}
-            >
-              Donate this NFT
-            </Button>
+          <Box height={30} className="hiddenButtonBox">
+              <Button
+                className="cardButton"
+                variant="outlined"
+                fullWidth
+                onClick={handleClickOpen}
+                >
+                Donate this NFT
+              </Button>
           </Box>
         </Box>
 
@@ -176,19 +208,19 @@ export default function MyNFTInfo({
               fullWidth
               variant="standard"
               sx={{ marginTop: "20px" }}
-            />
+              />
             <TextField
               autoFocus
               margin="dense"
               label="Short Description"
-              value={description}
+              value={desc}
               onChange={(e) => {
                 setDesc(e.target.value);
               }}
               fullWidth
               variant="standard"
               sx={{ marginTop: "10px" }}
-            />
+              />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
@@ -196,6 +228,7 @@ export default function MyNFTInfo({
           </DialogActions>
         </Dialog>
       </Box>
+              </Box>
     </NFTItemStyled>
   );
 }

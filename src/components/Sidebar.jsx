@@ -84,7 +84,7 @@ export default function MySidebar() {
             onClick={() => {
               history.push("/account");
             }}
-            sx={pathname == "list_nft" ? backLink : {}}
+            sx={pathname == "account" ? backLink : {}}
           >
             <AccountCircleIcon />
           </IconButton>
