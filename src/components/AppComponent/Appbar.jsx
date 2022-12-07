@@ -20,7 +20,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ColorModeContext, tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
-import { Button } from "@mui/material";
+import {
+  Button,
+  Popover,
+  TextareaAutosize,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import EmoStyled from "@emotion/styled";
 
 import logoWeb from "../../assets/img/weshare.svg";
@@ -95,14 +101,37 @@ export default function PrimarySearchAppBar({ web3Handler }) {
 
   const account = useSelector((state) => state.solidity.account);
 
-  const history = useHistory()
+  const history = useHistory();
+
+  // initial the state and the function to change the state
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? "donate" : undefined;
   return (
     <StyledAppBar
       color="transparent"
       className={colorChange ? "navbar colorChange" : "navbar"}
     >
       <Toolbar sx={{ display: "flex" }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }} onClick={()=>{history.push('/')}}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            history.push("/");
+          }}
+        >
           <img src={logoWeb} alt="logo" style={{ width: 40, height: 40 }} />
           <Typography
             variant="h5"
@@ -128,23 +157,96 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             marginLeft: "auto",
             display: "flex",
             justifyContent: "flex-end",
-            
           }}
         >
-          {/* <Typography
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginRight: "30px",
+          <Button
+            startIcon={<BloodtypeIcon />}
+            aria-describedby={id}
+            variant="outlined"
+            onClick={handleClick}
+          >
+            Donate
+          </Button>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
             }}
           >
-            <BorderColorIcon sx={{ marginRight: "4px" }} />
-            Create
-          </Typography> */}
-          {/* <Button startIcon={<BorderColorIcon />}>Create</Button> */}
-          <Button startIcon={<BloodtypeIcon />}>Donate</Button>
+            <Box
+              sx={{
+                p: 2,
+                width: 300,
+                height: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+              }}
+            >
+              <Typography variant="body1" className="PopoverTitle">
+                If you want to donate directory to us, please send your donation
+                to the following address:
+              </Typography>
+              <Tooltip title="Copy to clipboard" placement="top">
+                <Typography
+                  variant="body1"
+                  className="PopoverTitle"
+                  noWrap="false"
+                  // click to copy
 
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      "0x77cb965DF8671Bc0Ab84194BCcF14CeD2da90907"
+                    );
+                    alert("Copied to clipboard");
+                  }}
+                  sx={{
+                    border: "1px solid lightgreen ",
+                    borderRadius: "4px",
+                    padding: "4px",
+                    "&:hover": {
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  0x77cb965DF8671Bc0Ab84194BCcF14CeD2da90907
+                </Typography>
+              </Tooltip>
+              <Typography variant="body1">
+                Please send your donation in ETH:
+              </Typography>
+              <TextField
+                fullWidth
+                label="Amount"
+                variant="outlined"
+                type={"number"}
+                min={0}
+                placeholder="0.00"
+              />
+              <Typography variant="body1">
+                Please leave a message for us:
+              </Typography>
+              <TextField
+                label="Your Message"
+                variant="outlined"
+                fullWidth
+                placeholder="Leave the message in here"
+                multiline
+                rows={3}
+              />
+              <Button fullWidth variant="contained" color="secondary">
+                Donate to us
+              </Button>
+            </Box>
+          </Popover>
           <Typography
             onClick={() => {
               account ? console.log("") : web3Handler();
