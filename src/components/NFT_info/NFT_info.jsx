@@ -76,7 +76,7 @@ width: 300px;
           text-overflow: ellipsis;
           font-size: 1rem;
           text-transform: uppercase;
-          letter-spacing: 5px;
+          letter-spacing: 3px;
           font-weight: 700;
         }
       }
