@@ -18,7 +18,6 @@ class CreatePasswordResetsTable extends Migration
             $table->string('title');
             $table->string('desc');
             $table->string('img1_url');
-            $table->string('img2_url');
             $table->string('zone');
             $table->timestamps();
         });

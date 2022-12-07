@@ -97,7 +97,6 @@ class CampaignController extends Controller
         $campaign->title = $request->input('title');
         $campaign->description = $request->input('description');
         $campaign->img1_url = $request->input('img1_url');
-        $campaign->img2_url = $request->input('img2_url');
         $campaign->zone = $request->input('zone');
         
         $campaign->save();
