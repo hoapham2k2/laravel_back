@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class transaction extends Model
 {
     use HasFactory;
-    protected $fillable = ['trans_id', 'account_address', 'amount', 'is_nft_trans'];
+    protected $fillable = ['trans_id', 'account_address', 'amount', 'type', 'description'];
     public $timestamps = true;
 
     

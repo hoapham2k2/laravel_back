@@ -36,12 +36,12 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'trans_id' => 'required',
-            'account_address' => 'required',
-            'amount' => 'required',
-            'is_nft_trans' => 'required'
-        ]);
+        // $request->validate([
+        //     'trans_id' => 'required',
+        //     'account_address' => 'required',
+        //     'amount' => 'required',
+        //     'is_nft_trans' => 'required'
+        // ]);
 
         $transaction = Transaction::create($request->all());
 

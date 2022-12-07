@@ -17,7 +17,8 @@ class CreateFailedJobsTable extends Migration
             $table->string('trans_id');
             $table->string('account_address');
             $table->float('amount');
-            $table->boolean('is_nft_trans');
+            $table->integer('type');
+            $table->string('description');
             $table->timestamps();
         });
     }
