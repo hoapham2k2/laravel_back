@@ -115,6 +115,12 @@ export default function PrimarySearchAppBar({ web3Handler }) {
   };
   const open = Boolean(anchorEl);
   const id = open ? "donate" : undefined;
+
+  //handle on donate
+
+  const handleOnDonate = () => {
+    alert("Thank you for your donation!");
+  };
   return (
     <StyledAppBar
       color="transparent"
@@ -242,7 +248,12 @@ export default function PrimarySearchAppBar({ web3Handler }) {
                 multiline
                 rows={3}
               />
-              <Button fullWidth variant="contained" color="secondary">
+              <Button
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={handleOnDonate}
+              >
                 Donate to us
               </Button>
             </Box>
