@@ -74,7 +74,14 @@ class AuctionController extends Controller
      */
     public function edit(auction $auction)
     {
-        //
+        $auction->status = "Done";
+        
+        $auction->save();
+
+        return response()->json([
+            'message' => 'auction updated!',
+            'auction' => $auction
+        ]);
     }
 
     /**
