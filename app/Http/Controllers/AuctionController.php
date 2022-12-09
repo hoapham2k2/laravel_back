@@ -72,7 +72,7 @@ class AuctionController extends Controller
      * @param  \App\Models\auction  $auction
      * @return \Illuminate\Http\Response
      */
-    public function edit(auction $id)
+    public function edit($id)
     {
         $auction = DB::table('auctions')->where('nft_id', $id)->get()->first();
         $auction->status = "Done";
