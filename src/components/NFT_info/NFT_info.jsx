@@ -20,7 +20,7 @@ function toBase64(arr) {
 const NFTItemStyled = styled(Card)`
   width: 300px;
 
-  .wrapper {
+  .wrapper { 
     width: 100%;
     height: 100%;
  

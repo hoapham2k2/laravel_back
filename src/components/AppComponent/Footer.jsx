@@ -20,7 +20,7 @@ const StyledFooter = styled(Card)`
   padding: 0 20px;
   background-color: rgb(4, 17, 29);
 
-  .container {
+  .container_footer {
     padding: 0;
   }
 
@@ -103,7 +103,7 @@ const Footer = () => {
 
   return (
     <StyledFooter>
-      <Container className="container" maxWidth="lg">
+      <Container className="container_footer" maxWidth="lg">
         <Box className="top_footer">
           <Box className="top_left_footer">
             <Typography variant="h5">Stay in the loop</Typography>

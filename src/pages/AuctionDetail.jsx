@@ -22,8 +22,6 @@ import { toBase64, toWei, fromWei } from "../utils";
 
 import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
-import img1 from "../assets/img/slider1.jpg";
-import img2 from "../assets/img/img2.jpg";
 import SubjectIcon from "@mui/icons-material/Subject";
 import SegmentIcon from "@mui/icons-material/Segment";
 // import header icon
@@ -38,6 +36,9 @@ import {
 } from "@mui/icons-material";
 import ListIcon from "@mui/icons-material/List";
 import Footer from "../components/AppComponent/Footer";
+import Countdown from '../components/Countdown/Countdown'
+
+import { GetUSDExchangeRate, GetETHExchangeRate } from "../apis/ETH_price";
 
 // both page
 const AuctionDetailStyle = styled(Box)`
@@ -71,12 +72,14 @@ const StyledImgSlider = styled(Card)`
     width: 100%;
     height: 420px;
     overflow: hidden;
+    margin-bottom: 12px;
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: scale-down;
+      
       :hover {
-        transform: scale(1.1);
+        transform: scale(1.2);
         transition: all 0.3s ease-in-out;
       }
     }
@@ -239,7 +242,7 @@ const HeaderTitle = ({ title }) => {
       <Typography className="title" variant="h4">
         #02545
       </Typography>
-      <Typography className="campaign_name" variant="h3">
+      <Typography className="campaign_name" variant="h4">
         {title}
       </Typography>
     </StyledHeaderTitle>
@@ -330,32 +333,45 @@ const StyledCampaignInfo = styled(Card)`
   }
 `;
 
-const CampaignInfo = ({highestBid}) => {
+const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date, dateDisplay, timeout}) => {
+  const [price, setPrice] = useState(0);
+  const [ethPrice, setEthPrice] = useState("");
+  const [usdExRate, setUsdExRate] = useState();
+
+  useEffect(()=>{
+    GetUSDExchangeRate().then((res) => {
+      setUsdExRate(parseFloat(res));
+      console.log("usd", parseFloat(res));
+    });
+    handlePriceETH(highestBid)
+  }, [])
+  
+  const handlePriceETH = (eth) => {
+    let itemPrice = parseFloat(eth);
+    setEthPrice(itemPrice);
+  };
+
+  const bid = async (e) => {
+    // if (price < nft.startPrice) {
+    //   alert("price less than current price");
+    //   return;
+    // }
+    await (
+      await marketplaceContract.bid(nft_id, { value: toWei(price) })
+    ).wait();
+    window.location.reload()
+};
   return (
     <StyledCampaignInfo className="campaign_info">
       <Box className="infoContainer">
-        <Typography className="info_date" variant="h5">
-          Sale ends 6 tháng 12, 2022 at 5:34 CH GMT+7
+        <Typography className="info_date" variant="h6">
+          Sale ends {dateDisplay} {'    '}    
+          <Typography color="pink" variant="body1">{timeout && 'Time Out'}</Typography>
         </Typography>
         <Box className="info_time">
-          <Box className="time--hour">
-            <Typography className="real_time" variant="h6">
-              23
-            </Typography>
-            <Typography variant="body1">Hour</Typography>
-          </Box>
-          <Box className="time--minute">
-            <Typography className="real_time" variant="h6">
-              55
-            </Typography>
-            <Typography variant="body1">Minute</Typography>
-          </Box>
-          <Box className="time--second">
-            <Typography className="real_time" variant="h6">
-              12
-            </Typography>
-            <Typography variant="body1">Seconds</Typography>
-          </Box>
+        <Countdown 
+          date={date}
+        />
         </Box>
         <Divider className="divider" />
         <Box className="info_price">
@@ -365,10 +381,10 @@ const CampaignInfo = ({highestBid}) => {
             </Typography>
             <Box className="price">
               <Typography className="price--eth" variant="h4">
-                {highestBid} ETH
+                {highestBid ? highestBid : startPrice} ETH
               </Typography>
               <Typography className="price--usd" variant="h6">
-                11 USD
+                {(ethPrice * usdExRate).toFixed(2)} USD
               </Typography>
             </Box>
           </Box>
@@ -378,6 +394,11 @@ const CampaignInfo = ({highestBid}) => {
               label="Bid"
               variant="outlined"
               type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+                inputProps={{
+                  step: "0.0001",
+                }}
             />
           </Box>
         </Box>
@@ -386,6 +407,7 @@ const CampaignInfo = ({highestBid}) => {
           fullWidth
           variant="contained"
           color="secondary"
+          onClick={bid}
         >
           Bid now
         </Button>
@@ -511,10 +533,12 @@ const AuctionDetail = () => {
     (state) => state.solidity
   );
   const { nft_id } = useParams();
-  console.log(nft_id)
 
   const nft = nftList.filter((nft) => nft.id == nft_id)[0];
-    let items=[]
+  let items=[]
+  let date;
+  let dateDisplay;
+  let timeout = false;
   if (currAuction && nft) {
     currAuction.nft = nft;
     items.push({ name: "img1", img: currAuction.img1_url });
@@ -523,13 +547,19 @@ const AuctionDetail = () => {
       img: `data:image/png;base64,${toBase64(
         currAuction.nft.image.buffer.data
       )}`,
-    });
+    });//2022-12-08 15:00:00
+    const endAt = new Date(nft.endAt*1000)
+    let tempDate = endAt.getDate() < 10 ? '0'+endAt.getDate() : endAt.getDate();
+    date=endAt.getFullYear()+'-'+Number(endAt.getMonth()+1)+'-'+tempDate+' '+endAt.getHours()+':'+endAt.getMinutes()+':00'
+
+    dateDisplay=endAt.getDate()+ '/'+ Number(endAt.getMonth()+1)+ '/'+ endAt.getFullYear()+ ', ' + endAt.getHours()+':'+endAt.getMinutes() 
+    if(endAt < Date.now()) timeout = true;
   }
 
-  console.log(currAuction)
+
+
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log(1234234)  
     dispatch(getAuctionById(nft_id));
   }, [nft_id]);
 
@@ -553,8 +583,9 @@ const AuctionDetail = () => {
             </Box>
             <Box className="rightBox">
               <Header />
+              
               <HeaderTitle title={currAuction.title} />
-              <CampaignInfo highestBid={currAuction.nft.highestBid}/>
+              <CampaignInfo marketplaceContract={marketplaceContract} nft_id={nft_id} highestBid={currAuction.nft.highestBid} startPrice={currAuction.nft.startPrice} date={date} dateDisplay={dateDisplay}  timeout={timeout} />
               <BidHistory />
               <Other />
             </Box>
