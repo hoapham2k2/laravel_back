@@ -14,7 +14,7 @@ class CreateFailedJobsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->string('trans_id');
+            $table->bigIncrements('id');
             $table->string('account_address');
             $table->float('amount');
             $table->integer('type');
