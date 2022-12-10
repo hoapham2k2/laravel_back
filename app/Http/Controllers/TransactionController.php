@@ -57,10 +57,9 @@ class TransactionController extends Controller
      * @param  \App\Models\transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Transaction $transaction)
     {
-        $trans = Transaction::where('trans_id', $id)->get()->first();
-        return response()->json($trans);
+        return $transaction;
     }
 
     /**
@@ -81,7 +80,7 @@ class TransactionController extends Controller
      * @param  \App\Models\transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, transaction $transaction)
+    public function update(Request $request, Transaction $transaction)
     {
         //
     }
@@ -92,7 +91,7 @@ class TransactionController extends Controller
      * @param  \App\Models\transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(transaction $transaction)
+    public function destroy(Transaction $transaction)
     {
         //
     }
