@@ -116,7 +116,7 @@ class AuctionController extends Controller
      */
     public function updateStatus($id)
     {
-        $auction = Auction::where('nft_id', $id)->get();
+        $auction = Auction::where('nft_id', $id)->get()->first();
         $auction->status = "Done";
         
         $auction->save();
