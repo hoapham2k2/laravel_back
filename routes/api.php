@@ -24,7 +24,7 @@ Route::put('/camp/{campaign}', [CampaignController::class, 'update']);
 Route::get('/camp', [CampaignController::class, 'index']);
 Route::get('/camp/{campaign}', [CampaignController::class, 'show']);
 Route::post('/auction', [AuctionController::class, 'store']);
-Route::put('/auction/{id}', [AuctionController::class, 'edit']);
+Route::put('/auction/{id}', [AuctionController::class, 'updateStatus']);
 Route::get('/auction', [AuctionController::class, 'index']);
 Route::get('/auction/{id}', [AuctionController::class, 'show']);
 Route::post('/trans', [TransactionController::class, 'store']);
