@@ -15,6 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -162,9 +163,17 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             flex: 1,
             marginLeft: "auto",
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
           }}
         >
+          <Button
+            startIcon={<AssessmentIcon />}
+            aria-describedby={id}
+            variant="outlined"
+            onClick={()=>{history.push('/all-auction  ')}}
+          >
+            Auctions
+          </Button>
           <Button
             startIcon={<BloodtypeIcon />}
             aria-describedby={id}

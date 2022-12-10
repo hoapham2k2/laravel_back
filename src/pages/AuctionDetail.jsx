@@ -323,8 +323,10 @@ const StyledCampaignInfo = styled(Card)`
       line-height: 3rem;
       font-size: 1.5rem;
       color: #fff;
+      cursor:pointer;
+      text-decoration: ${props => !props.isStarted ? 'line-through': ''}
 
-      background: linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%);
+      background: ${props => !props.isStarted ? 'gray': 'linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%)'}
       &:hover {
         background: linear-gradient(90deg, #ff5f6d 0%, #ffc371 30%);
         color: lightgreen;
@@ -333,7 +335,7 @@ const StyledCampaignInfo = styled(Card)`
   }
 `;
 
-const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date, dateDisplay, timeout}) => {
+const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date, dateDisplay, timeout, isStarted}) => {
   const [price, setPrice] = useState(0);
   const [ethPrice, setEthPrice] = useState("");
   const [usdExRate, setUsdExRate] = useState();
@@ -362,22 +364,22 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
     window.location.reload()
 };
   return (
-    <StyledCampaignInfo className="campaign_info">
+    <StyledCampaignInfo className="campaign_info" isStarted={isStarted}>
       <Box className="infoContainer">
         <Typography className="info_date" variant="h6">
           Sale ends {dateDisplay} {'    '}    
           <Typography color="pink" variant="body1">{timeout && 'Time Out'}</Typography>
         </Typography>
         <Box className="info_time">
-        <Countdown 
-          date={date}
-        />
+        {!timeout && isStarted ? <Countdown date={date} />:  <Typography color="pink" variant="h6">
+            Auction Ended
+          </Typography>}
         </Box>
         <Divider className="divider" />
         <Box className="info_price">
           <Box className="price--left">
             <Typography className="price_title" variant="h5">
-              Current bid
+              {isStarted ? 'Current Bid' : 'Highest Bid'}
             </Typography>
             <Box className="price">
               <Typography className="price--eth" variant="h4">
@@ -399,6 +401,8 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
                 inputProps={{
                   step: "0.0001",
                 }}
+          disabled={!isStarted}
+
             />
           </Box>
         </Box>
@@ -408,6 +412,7 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
           variant="contained"
           color="secondary"
           onClick={bid}
+          disabled={!isStarted}
         >
           Bid now
         </Button>
@@ -585,7 +590,7 @@ const AuctionDetail = () => {
               <Header />
               
               <HeaderTitle title={currAuction.title} />
-              <CampaignInfo marketplaceContract={marketplaceContract} nft_id={nft_id} highestBid={currAuction.nft.highestBid} startPrice={currAuction.nft.startPrice} date={date} dateDisplay={dateDisplay}  timeout={timeout} />
+              <CampaignInfo marketplaceContract={marketplaceContract} nft_id={nft_id} highestBid={currAuction.nft.highestBid} startPrice={currAuction.nft.startPrice} date={date} dateDisplay={dateDisplay}  timeout={timeout} isStarted={nft.isStarted}/>
               <BidHistory />
               <Other />
             </Box>
