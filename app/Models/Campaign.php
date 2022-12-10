@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class campaign extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'title', 'desc', 'img1_url', 'zone'];
+    protected $fillable = ['id', 'title', 'description', 'img1_url', 'zone'];
     public $timestamps = true;
 
     public function auction()
