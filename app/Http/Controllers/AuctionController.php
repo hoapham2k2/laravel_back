@@ -108,9 +108,15 @@ class AuctionController extends Controller
         //
     }
 
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\auction  $auction
+     * @return \Illuminate\Http\Response
+     */
     public function updateStatus($id)
     {
-        $auction = DB::table('auctions')->where('nft_id', $id)->get()->first();
+        $auction = Auction::where('nft_id', $id)->get();
         $auction->status = "Done";
         
         $auction->save();
