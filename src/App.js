@@ -14,7 +14,6 @@ import { Home } from "./pages/Home";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSolidity } from "./actions/solidity";
 import "./App.css";
-import Auction from "./pages/Auction";
 import Account from "./pages/Account";
 import createTheme from "@mui/material/styles/createTheme";
 import ErrorPages from "./pages/ErrorPages";
@@ -27,6 +26,16 @@ import AllAuction from "./pages/AllAuction";
 const App = () => {
   const dispatch = useDispatch();
   let accounts;
+  const clearAccount = () => {
+    dispatch({
+      type: CONNECT_ACC,
+      payload: {
+        account: '',
+      },
+    });
+    localStorage.setItem('acc', '');
+    window.location.reload()
+  }
 
   const web3Handler = async () => {
     // connect metamask
@@ -38,26 +47,34 @@ const App = () => {
 
     // Set signer
     const signer = provider.getSigner();
-
     window.ethereum.on("chainChanged", (chainId) => {
       window.location.reload();
     });
 
-    window.ethereum.on("accountsChanged", async function (accounts) {
-      await web3Handler();
-    });
+    window.ethereum.on("accountsChanged", clearAccount);
+    console.log(accounts)
     dispatch({
       type: CONNECT_ACC,
       payload: {
         account: accounts[0],
       },
     });
+    localStorage.setItem('acc', accounts[0]);
+    dispatch(fetchSolidity());
   };
 
   useEffect(() => {
-    web3Handler();
+    // web3Handler();
+    const acc = localStorage.getItem('acc');
+    dispatch({
+      type: CONNECT_ACC,
+      payload: {
+        account: acc,
+      },
+    });
+    
     dispatch(fetchSolidity());
-  },[accounts]);
+  });
 
   // darkmode
   const [darkMode, setDarkMode] = useState(true);
@@ -82,9 +99,7 @@ const App = () => {
           className="content"
           sx={{ width: "100%", height: "100%", display: "flex" }}
         >
-          {/* sidebar */}
           <Sidebar />
-
           {/* right part of app */}
           <Box
             className="right_box"
@@ -100,7 +115,6 @@ const App = () => {
                 <Route path="/create_nft" exact component={create_nft} />
                 <Route path="/history" exact component={HistoryTransaction} />
                 <Route path="/auction/:nft_id" exact component={AuctionDetail} />
-                <Route path="/auction-detail" exact component={AuctionDetail} />
 
                 {/* <Route path="/auction" exact component={Auction} /> */}
                 <Route path="/account" exact component={Account} />

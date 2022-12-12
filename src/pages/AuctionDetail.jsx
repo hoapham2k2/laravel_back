@@ -555,9 +555,12 @@ const AuctionDetail = () => {
     });//2022-12-08 15:00:00
     const endAt = new Date(nft.endAt*1000)
     let tempDate = endAt.getDate() < 10 ? '0'+endAt.getDate() : endAt.getDate();
-    date=endAt.getFullYear()+'-'+Number(endAt.getMonth()+1)+'-'+tempDate+' '+endAt.getHours()+':'+endAt.getMinutes()+':00'
+    let tempHour = endAt.getHours() < 10 ? '0'+endAt.getHours() : endAt.getHours();
+    let tempMin = endAt.getMinutes() < 10 ? '0'+endAt.getMinutes() : endAt.getMinutes();
 
-    dateDisplay=endAt.getDate()+ '/'+ Number(endAt.getMonth()+1)+ '/'+ endAt.getFullYear()+ ', ' + endAt.getHours()+':'+endAt.getMinutes() 
+    date=endAt.getFullYear()+'-'+Number(endAt.getMonth()+1)+'-'+tempDate+' '+tempHour+':'+tempMin+':00'
+
+    dateDisplay=endAt.getDate()+ '/'+ Number(endAt.getMonth()+1)+ '/'+ endAt.getFullYear()+ ', ' + tempHour+':'+tempMin
     if(endAt < Date.now()) timeout = true;
   }
 

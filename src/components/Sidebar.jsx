@@ -16,7 +16,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 // import logo from "../../assets/litecoin.svg";
@@ -29,14 +29,15 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-
+import { useSelector } from "react-redux";
 const drawerWidth = 70;
 
 export default function MySidebar() {
   const history = useHistory();
   const location = useLocation();
   const pathname = location.pathname.split("/")[1];
-  console.log(pathname);
+
+  const { account } = useSelector((state) => state.solidity);
 
   const backLink = {
     backgroundColor: "rgb(0, 221, 162)",
@@ -79,37 +80,42 @@ export default function MySidebar() {
             <HomeIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Account" placement="right-end">
-          <IconButton
-            onClick={() => {
-              history.push("/account");
-            }}
-            sx={pathname == "account" ? backLink : {}}
-          >
-            <AccountCircleIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="History" placement="right-end">
-          <IconButton
-            onClick={() => {
-              history.push("/history");
-            }}
-            sx={pathname == "history" ? backLink : {}}
-          >
-            <ReceiptLongIcon />
-          </IconButton>
-        </Tooltip>
-     
-        <Tooltip title="Create NFT" placement="right-end">
-          <IconButton
-            onClick={() => {
-              history.push("/create_nft");
-            }}
-            sx={pathname == "create_nft" ? backLink : {}}
-          >
-            <CloudUploadIcon />
-          </IconButton>
-        </Tooltip>
+
+        {account && (
+          <>
+            <Tooltip title="Account" placement="right-end">
+              <IconButton
+                onClick={() => {
+                  history.push("/account");
+                }}
+                sx={pathname == "account" ? backLink : {}}
+              >
+                <AccountCircleIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="History" placement="right-end">
+              <IconButton
+                onClick={() => {
+                  history.push("/history");
+                }}
+                sx={pathname == "history" ? backLink : {}}
+              >
+                <ReceiptLongIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Create NFT" placement="right-end">
+              <IconButton
+                onClick={() => {
+                  history.push("/create_nft");
+                }}
+                sx={pathname == "create_nft" ? backLink : {}}
+              >
+                <CloudUploadIcon />
+              </IconButton>
+            </Tooltip>
+          </>
+        )}
       </Toolbar>
     </Drawer>
   );

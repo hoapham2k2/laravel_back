@@ -49,6 +49,7 @@ const Message = () => {
 
 // Countdown component
 const Countdown = ({date}) => {
+  console.log(date)
   // Dates object
   const dateObj = {
     startDateTime: moment().format(),

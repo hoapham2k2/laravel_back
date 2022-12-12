@@ -22,8 +22,8 @@ export const fetchSolidity = (accounts)  => async (dispatch) => {
   );
   const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer);
 
-  // console.log("ntf contract: ", nft);
-  // console.log("marketplace contract: ", marketplace);
+  console.log("ntf contract: ", nft);
+  console.log("marketplace contract: ", marketplace);
 
   const itemCount = await marketplace.itemCount();
   // console.log(itemCount);
@@ -34,7 +34,6 @@ export const fetchSolidity = (accounts)  => async (dispatch) => {
       // get uri url from nft contract
       const uri = await nft.tokenURI(item.tokenId);
       // use uri to fetch the nft metadata stored on ipfs
-      console.log(uri)
       const response = await fetch(uri);
       // console.log("response nft number ", i, ": ", response);
       const metadata = await response.json();

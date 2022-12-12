@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ColorModeContext, tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
+import { account_admin, toWei } from "../../utils";
+
 import {
   Button,
   Popover,
@@ -90,6 +92,7 @@ const StyledAppBar = styled(AppBar)`
 `;
 
 export default function PrimarySearchAppBar({ web3Handler }) {
+  const [price, setPrice] = React.useState(0);
   const [colorChange, setColorchange] = React.useState(false);
   const changeNavbarColor = () => {
     if (window.scrollY >= 60) {
@@ -100,7 +103,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
   };
   window.addEventListener("scroll", changeNavbarColor);
 
-  const account = useSelector((state) => state.solidity.account);
+  const {account} = useSelector((state) => state.solidity);
 
   const history = useHistory();
 
@@ -119,8 +122,29 @@ export default function PrimarySearchAppBar({ web3Handler }) {
 
   //handle on donate
 
-  const handleOnDonate = () => {
+  const handleOnDonate = async () => {
+    if (!window.ethereum) return alert('Please install metamask first');
+    if(!account) alert('Please connect account');
+
+    const amount_eth = toWei(price);
+
+    await window.ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: account,
+          to: account_admin,
+          gas: '0x5208',
+          value: amount_eth._hex,
+        },
+      ],
+    });
+
     alert("Thank you for your donation!");
+
+  };
+  const handleConnectWallet = () => {
+    web3Handler();
   };
   return (
     <StyledAppBar
@@ -170,7 +194,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             startIcon={<AssessmentIcon />}
             aria-describedby={id}
             variant="outlined"
-            onClick={()=>{history.push('/all-auction  ')}}
+            onClick={()=>{history.push('/all-auction')}} 
           >
             Auctions
           </Button>
@@ -195,6 +219,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
               vertical: "top",
               horizontal: "center",
             }}
+            sx={{mt: '20px'}}
           >
             <Box
               sx={{
@@ -203,7 +228,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
                 height: "auto",
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "16px",
               }}
             >
               <Typography variant="body1" className="PopoverTitle">
@@ -242,9 +267,14 @@ export default function PrimarySearchAppBar({ web3Handler }) {
                 fullWidth
                 label="Amount"
                 variant="outlined"
-                type={"number"}
+                type='number'
                 min={0}
                 placeholder="0.00"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                  inputProps={{
+                    step: "0.001",
+                  }}
               />
               <Typography variant="body1">
                 Please leave a message for us:
