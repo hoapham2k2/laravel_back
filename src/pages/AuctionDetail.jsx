@@ -337,7 +337,6 @@ const StyledCampaignInfo = styled(Card)`
 
 const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date, dateDisplay, timeout, isStarted}) => {
   const [price, setPrice] = useState(0);
-  const [ethPrice, setEthPrice] = useState("");
   const [usdExRate, setUsdExRate] = useState();
 
   useEffect(()=>{
@@ -350,7 +349,6 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
   
   const handlePriceETH = (eth) => {
     let itemPrice = parseFloat(eth);
-    setEthPrice(itemPrice);
   };
 
   const bid = async (e) => {
@@ -386,7 +384,7 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
                 {highestBid ? highestBid : startPrice} ETH
               </Typography>
               <Typography className="price--usd" variant="h6">
-                {(ethPrice * usdExRate).toFixed(2)} USD
+                {(highestBid ? highestBid * usdExRate: startPrice * usdExRate).toFixed(2)} USD
               </Typography>
             </Box>
           </Box>

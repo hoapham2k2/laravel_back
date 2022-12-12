@@ -6,7 +6,7 @@ import MarketplaceAbi from "./utils/contractsData/Marketplace.json";
 import MarketplaceAddress from "./utils/contractsData/Marketplace-address.json";
 import NFTAbi from "./utils/contractsData/NFT.json";
 import NFTAddress from "./utils/contractsData/NFT-address.json";
-import create_nft from "./pages/Create_NFT";
+import Create_nft from "./pages/Create_NFT";
 import Sidebar from "./components/Sidebar";
 import Appbar from "./components/AppComponent/Appbar";
 import { CONNECT_ACC } from "./constraint/actionTypes";
@@ -25,6 +25,7 @@ import AllAuction from "./pages/AllAuction";
 
 const App = () => {
   const dispatch = useDispatch();
+  const ac = useSelector(state=>state.solidity.account)
   let accounts;
   const clearAccount = () => {
     dispatch({
@@ -112,19 +113,19 @@ const App = () => {
             <Appbar web3Handler={web3Handler} />
             <Box className="pages_box">
               <Switch>
-                <Route path="/create_nft" exact component={create_nft} />
-                <Route path="/history" exact component={HistoryTransaction} />
-                <Route path="/auction/:nft_id" exact component={AuctionDetail} />
-
-                {/* <Route path="/auction" exact component={Auction} /> */}
-                <Route path="/account" exact component={Account} />
-                <Route path="/all-auction" exact component={AllAuction} />
                 <Route
                   path="/home"
                   exact
                   component={() => <Redirect to="/" />}
                 />
                 <Route path="/" exact component={Home} />
+                <Route path="/create_nft" exact  component={() => {return !ac?  <Redirect to="/" /> : <Create_nft />}} />
+                <Route path="/history" exact component={HistoryTransaction} />
+                <Route path="/auction/:nft_id" exact component={AuctionDetail} />
+
+                {/* <Route path="/auction" exact component={Auction} /> */}
+                <Route path="/account" exact component={Account} />
+                <Route path="/all-auction" exact component={AllAuction} />
                 <Route path="*" component={ErrorPages} />
               </Switch>
             </Box>
