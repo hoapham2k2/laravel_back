@@ -5,7 +5,6 @@ import { getAuction } from "../actions/auction";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../components/AppComponent/Footer";
-import imgAuctionItem from "../assets/img/slider1.jpg";
 
 const StyledAllAuction = styled(Box)`
   padding: 24px;
@@ -50,7 +49,6 @@ const StyledItemAuction = styled(Card)`
   .cardContent {
     padding: 10px;
     width: 100%;
-    height: 100%;
     .cardTitle {
       font-size: 20px;
       font-weight: 700;
@@ -75,6 +73,7 @@ const StyledItemAuction = styled(Card)`
       font-weight: 700;
       text-transform: uppercase;
       font-size: 20px;
+      justify-self: flex-end;
     }
   }
 `;

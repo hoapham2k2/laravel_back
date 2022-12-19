@@ -18,7 +18,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { ColorModeContext, tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
 import { account_admin, toWei } from "../../utils";
@@ -94,6 +94,10 @@ const StyledAppBar = styled(AppBar)`
 export default function PrimarySearchAppBar({ web3Handler }) {
   const [price, setPrice] = React.useState(0);
   const [colorChange, setColorchange] = React.useState(false);
+
+  const location = useLocation()
+  const pathname = location.pathname.split("/")[1];
+
   const changeNavbarColor = () => {
     if (window.scrollY >= 60) {
       setColorchange(true);
@@ -125,6 +129,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
   const handleOnDonate = async () => {
     if (!window.ethereum) return alert('Please install metamask first');
     if(!account) alert('Please connect account');
+   
 
     const amount_eth = toWei(price);
 
@@ -141,11 +146,20 @@ export default function PrimarySearchAppBar({ web3Handler }) {
     });
 
     alert("Thank you for your donation!");
+    if(pathname == 'history')
+      window.location.reload();
 
   };
   const handleConnectWallet = () => {
     web3Handler();
   };
+  const [searchQuery, setSearchQuery] = React.useState('')
+  
+  const handleSearch = (e) => {
+    if(e.key == "Enter") {
+      history.push(`/search/?value=${searchQuery}`)
+    }
+  }
   return (
     <StyledAppBar
       color="transparent"
@@ -178,6 +192,9 @@ export default function PrimarySearchAppBar({ web3Handler }) {
           <StyledInputBase
             placeholder="Search…"
             inputProps={{ "aria-label": "search" }}
+            value={searchQuery}
+            onChange={(e)=>{setSearchQuery(e.target.value)}}
+            onKeyPress={handleSearch}
           />
         </Search>
 

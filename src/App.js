@@ -21,6 +21,7 @@ import HistoryTransaction from "./pages/HistoryTransaction.jsx/HistoryTransactio
 import { HomeMax } from "@mui/icons-material";
 import AuctionDetail from "./pages/AuctionDetail";
 import AllAuction from "./pages/AllAuction";
+import Search from "./pages/Search";
 // import AuctionDetail from "./pages/AuctionDetail";
 
 const App = () => {
@@ -120,12 +121,13 @@ const App = () => {
                 />
                 <Route path="/" exact component={Home} />
                 <Route path="/create_nft" exact  component={() => {return !ac?  <Redirect to="/" /> : <Create_nft />}} />
-                <Route path="/history" exact component={HistoryTransaction} />
+                <Route path="/history" exact  component={() => {return !ac?  <Redirect to="/" /> : <HistoryTransaction />}} />
                 <Route path="/auction/:nft_id" exact component={AuctionDetail} />
 
                 {/* <Route path="/auction" exact component={Auction} /> */}
-                <Route path="/account" exact component={Account} />
-                <Route path="/all-auction" exact component={AllAuction} />
+                <Route path="/account" exact component={() => {return !ac?  <Redirect to="/" /> : <Account />}} />
+                <Route path="/all-auction" exact component={AllAuction}  />
+                <Route path="/search" exact component={Search}  />
                 <Route path="*" component={ErrorPages} />
               </Switch>
             </Box>

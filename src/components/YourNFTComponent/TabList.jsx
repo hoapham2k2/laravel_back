@@ -109,7 +109,7 @@ export default function TabsList(props) {
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three
