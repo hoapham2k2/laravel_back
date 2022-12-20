@@ -16,7 +16,7 @@ class CreatePasswordResetsTable extends Migration
         Schema::create('campaigns', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->string('desc');
+            $table->string('description');
             $table->string('img1_url');
             $table->string('zone');
             $table->timestamps();
