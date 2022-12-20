@@ -8,7 +8,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {TRANS_NFT} from '../../constraint/actionTypes'
 import * as api from "../../apis";
 
 import styled from "@emotion/styled";
@@ -116,21 +117,27 @@ export default function MyNFTInfo({
 }) {
   const [open, setOpen] = useState(false);
   const [desc, setDesc] = useState("");
+  const dispatch = useDispatch()
 
   const transNFT = async () => {
     const a = await (
       await marketplaceContract.transItem(nftContract.address, id)
-    ).wait();
-    console.log(a);
-    const trans = {
-      trans_id: id,
-      account_address: account,
-      amount: 0,
-      type: 0, //0: donate nft  |  1: donate eth  | 2: auction nft
-      description: desc,
-    };
-    await api.createTrans(trans);
-    window.location.reload();
+      ).wait();
+      console.log(a);
+      const trans = {
+        trans_id: id,
+        account_address: account,
+        amount: 0,
+        type: 0, //0: donate nft  |  1: donate eth  | 2: auction nft
+        description: desc,
+      };
+      dispatch({
+        type: 'TRANS_NFT',
+        payload: id
+      })
+    // await api.createTrans(trans);
+    setOpen(false);
+    
     handleClose();
   };
 

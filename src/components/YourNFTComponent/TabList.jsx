@@ -83,7 +83,6 @@ export default function TabsList(props) {
         >
           <Tab label="Collection" {...a11yProps(0)} />
           <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -111,9 +110,7 @@ export default function TabsList(props) {
       <TabPanel value={value} index={1}>
         
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
+     
     </Box>
   );
 }

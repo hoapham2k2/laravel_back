@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Box, Typography, Avatar, Card, Button } from "@mui/material";
 import Slider from "../components/Slider";
 
@@ -9,8 +9,10 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import Footer from "../components/AppComponent/Footer";
 import NFT101 from "../components/NFT101";
 import RecentNFT from "../components/AppComponent/RecentNFT";
+import { getAuction } from "../actions/auction";
 
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 // declare some constant of campaign
 const BORDER = "1px solid #E5E5E5";
 const CARD_BORDER_RADIUS = "16px";
@@ -34,7 +36,11 @@ const ItemTitle = styled(Box)`
   }
 `;
 // Item of Campaign
-const ItemCampaignDemo = () => {
+const ItemCampaignDemo = ({nft_id, title, timeout, image, history}) => {
+  const date = new Date(timeout*1000)
+  const tempHour = date.getHours() < 10 ? '0'+date.getHours() : date.getHours();
+  const tempMin = date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes();
+  const dateDisplay=date.getDate()+ '/'+ Number(date.getMonth()+1)+ '/'+ date.getFullYear()+ ', ' + tempHour+':'+tempMin
   return (
     <Card
       sx={{
@@ -53,15 +59,15 @@ const ItemCampaignDemo = () => {
           borderRadius: CARD_BORDER_RADIUS,
           border: BORDER,
         }}
-        src={img2}
+        src={image}
       />
 
       <ItemTitle sx={{ ...SETTING_FLEX_COL, justifyContent: "space-between" }}>
-        <Typography className="title">SuperIdol</Typography>
-        <Typography className="detail">02:18:25s</Typography>
+        <Typography className="title">{title}</Typography>
+        <Typography className="detail">{dateDisplay}</Typography>
       </ItemTitle>
 
-      <Button variant="text" sx={{ marginLeft: "auto" }}>
+      <Button variant="text" sx={{ marginLeft: "auto" }} onClick={()=>history.push(`/auction/${nft_id}`)}>
         Join now
       </Button>
     </Card>
@@ -72,7 +78,7 @@ const ItemCampaignDemo = () => {
 
 // Campaign List
 
-const CampaignList = () => {
+const CampaignList = ({auctions}) => {
   const history = useHistory()
   return (
     <Box mt={3}>
@@ -89,24 +95,13 @@ const CampaignList = () => {
       </Box>
 
       <Grid2 container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid2 xs={6}>
-          <ItemCampaignDemo />
-        </Grid2>
-        <Grid2 xs={6}>
-          <ItemCampaignDemo />
-        </Grid2>
-        <Grid2 xs={6}>
-          <ItemCampaignDemo />
-        </Grid2>
-        <Grid2 xs={6}>
-          <ItemCampaignDemo />
-        </Grid2>
-        <Grid2 xs={6}>
-          <ItemCampaignDemo />
-        </Grid2>
-        <Grid2 xs={6}>
-          <ItemCampaignDemo />
-        </Grid2>
+        {auctions.map((auc)=> (
+
+          <Grid2 xs={6}>
+            <ItemCampaignDemo nft_id={auc.nft_id} title={auc.title} timeout={auc.endAt} image={auc.img1_url} history={history}/>
+          </Grid2>
+          ))}
+        
       </Grid2>
     </Box>
   );
@@ -137,7 +132,12 @@ const HomePages = styled(Box)`
 const HeaderPages = styled(Box)``;
 
 export const Home = () => {
-
+  const dispatch = useDispatch()
+  const {auctions} = useSelector(state=>state.auction)
+  const fist6Auctions = auctions.slice(0,6)
+  useEffect(() => {
+    dispatch(getAuction());
+  }, []);
   return (
     <>
       <HomePages>
@@ -148,7 +148,7 @@ export const Home = () => {
           <Slider />
         </HeaderPages>
         <RecentNFT />
-        <CampaignList />
+        <CampaignList auctions={fist6Auctions}/>
         {/* nft 101 */}
         <NFT101 />
         {/* footer */}

@@ -21,6 +21,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import AlertLoading from '../components/AlertLoading'
 
 const StyledCreateNFTPages = styled(Box)`
   width: 100%;
@@ -68,36 +69,36 @@ export function AlertDialog() {
   );
 }
 
-export function AlertLoading({stepTxt}) {
-  const [open, setOpen] = React.useState(true);
+// export function AlertLoading({stepTxt}) {
+//   const [open, setOpen] = React.useState(true);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+//   const handleClickOpen = () => {
+//     setOpen(true);
+//   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
 
-  return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title" align='center'>
-          Minting NFT
-        </DialogTitle>
-          <Typography align='center'>{stepTxt}</Typography>
-        <Box sx={{padding: '50px 100px 80px 100px'}}>
-          <CircularProgress />
-        </Box>
-      </Dialog>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <Dialog
+//         open={open}
+//         onClose={handleClose}
+//         aria-labelledby="alert-dialog-title"
+//         aria-describedby="alert-dialog-description"
+//       >
+//         <DialogTitle id="alert-dialog-title" align='center'>
+//           Minting NFT
+//         </DialogTitle>
+//           <Typography align='center'>{stepTxt}</Typography>
+//         <Box sx={{padding: '50px 100px 80px 100px'}}>
+//           <CircularProgress />
+//         </Box>
+//       </Dialog>
+//     </div>
+//   );
+// }
 
 const Create_NFT = () => {
   const [name, setName] = useState("");
@@ -186,7 +187,7 @@ const Create_NFT = () => {
       <CssBaseline />
       {/* start left box to upload nft */}
       {cnt == 1  && <AlertDialog />}
-      {loading && <AlertLoading stepTxt={stepTxt} />}
+      {loading && <AlertLoading text={stepTxt} />}
       <Card
         sx={{
           display: "flex",

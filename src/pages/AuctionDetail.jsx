@@ -19,7 +19,7 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAuctionById } from "../actions/auction";
 import { toBase64, toWei, fromWei } from "../utils";
-
+import AlertLoading from "../components/AlertLoading";
 import styled from "styled-components";
 import Carousel from "react-material-ui-carousel";
 import SubjectIcon from "@mui/icons-material/Subject";
@@ -36,8 +36,7 @@ import {
 } from "@mui/icons-material";
 import ListIcon from "@mui/icons-material/List";
 import Footer from "../components/AppComponent/Footer";
-import Countdown from '../components/Countdown/Countdown'
-
+import Countdown from "../components/Countdown/Countdown";
 import { GetUSDExchangeRate, GetETHExchangeRate } from "../apis/ETH_price";
 
 // both page
@@ -77,7 +76,7 @@ const StyledImgSlider = styled(Card)`
       width: 100%;
       height: 100%;
       object-fit: scale-down;
-      
+
       :hover {
         transform: scale(1.2);
         transition: all 0.3s ease-in-out;
@@ -86,7 +85,7 @@ const StyledImgSlider = styled(Card)`
   }
 `;
 
-const ImgSlider = ({items}) => {
+const ImgSlider = ({ items }) => {
   return (
     <>
       <Carousel
@@ -121,8 +120,6 @@ const Item = (props) => {
     </StyledImgSlider>
   );
 };
-
-
 
 // card Description
 const StyledCardDescription = styled(Card)`
@@ -324,9 +321,12 @@ const StyledCampaignInfo = styled(Card)`
       font-size: 1.5rem;
       color: #fff;
       cursor:pointer;
-      text-decoration: ${props => !props.isStarted ? 'line-through': ''}
+      text-decoration: ${(props) => (!props.isStarted ? "line-through" : "")}
 
-      background: ${props => !props.isStarted ? 'gray': 'linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%)'}
+      background: ${(props) =>
+        !props.isStarted
+          ? "gray"
+          : "linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%)"}
       &:hover {
         background: linear-gradient(90deg, #ff5f6d 0%, #ffc371 30%);
         color: lightgreen;
@@ -335,23 +335,38 @@ const StyledCampaignInfo = styled(Card)`
   }
 `;
 
-const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date, dateDisplay, timeout, isStarted}) => {
+const CampaignInfo = ({
+  marketplaceContract,
+  nft_id,
+  highestBid,
+  startPrice,
+  date,
+  dateDisplay,
+  timeout,
+  isStarted,
+  setText,
+  setLoading,
+}) => {
   const [price, setPrice] = useState(0);
   const [usdExRate, setUsdExRate] = useState();
+  const [higBid, setHigBid] = useState(highestBid ? highestBid : startPrice);
 
-  useEffect(()=>{
+  useEffect(() => {
     GetUSDExchangeRate().then((res) => {
       setUsdExRate(parseFloat(res));
       console.log("usd", parseFloat(res));
     });
-    handlePriceETH(highestBid)
-  }, [])
-  
+    handlePriceETH(highestBid);
+  }, []);
+
   const handlePriceETH = (eth) => {
     let itemPrice = parseFloat(eth);
   };
 
-  const bid = async (e) => {
+  const bid = async (isStarted, timeout) => {
+    if (!isStarted || timeout || price < higBid) return;
+    setLoading(true);
+    setText("Step 1/1");
     // if (price < nft.startPrice) {
     //   alert("price less than current price");
     //   return;
@@ -359,32 +374,39 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
     await (
       await marketplaceContract.bid(nft_id, { value: toWei(price) })
     ).wait();
-    window.location.reload()
-};
+    setLoading(false);
+    setHigBid(price);
+  };
   return (
     <StyledCampaignInfo className="campaign_info" isStarted={isStarted}>
       <Box className="infoContainer">
         <Typography className="info_date" variant="h6">
-          Sale ends {dateDisplay} {'    '}    
-          <Typography color="pink" variant="body1">{timeout && 'Time Out'}</Typography>
+          Sale ends {dateDisplay} {"    "}
+          <Typography color="pink" variant="body1">
+            {timeout && "Time Out"}
+          </Typography>
         </Typography>
         <Box className="info_time">
-        {!timeout && isStarted ? <Countdown date={date} />:  <Typography color="pink" variant="h6">
-            Auction Ended
-          </Typography>}
+          {!timeout && isStarted ? (
+            <Countdown date={date} />
+          ) : (
+            <Typography color="pink" variant="h6">
+              Auction Ended
+            </Typography>
+          )}
         </Box>
         <Divider className="divider" />
         <Box className="info_price">
           <Box className="price--left">
             <Typography className="price_title" variant="h5">
-              {isStarted ? 'Current Bid' : 'Highest Bid'}
+              {isStarted ? "Current Bid" : "Highest Bid"}
             </Typography>
             <Box className="price">
               <Typography className="price--eth" variant="h4">
-                {highestBid ? highestBid : startPrice} ETH
+                {higBid} ETH
               </Typography>
               <Typography className="price--usd" variant="h6">
-                {(highestBid ? highestBid * usdExRate: startPrice * usdExRate).toFixed(2)} USD
+                {(higBid * usdExRate).toFixed(2)} USD
               </Typography>
             </Box>
           </Box>
@@ -396,11 +418,10 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-                inputProps={{
-                  step: "0.0001",
-                }}
-          disabled={!isStarted}
-
+              inputProps={{
+                step: "0.0001",
+              }}
+              disabled={!isStarted || timeout}
             />
           </Box>
         </Box>
@@ -409,8 +430,9 @@ const CampaignInfo = ({ marketplaceContract,nft_id, highestBid, startPrice, date
           fullWidth
           variant="contained"
           color="secondary"
-          onClick={bid}
-          disabled={!isStarted}
+          onClick={() => {
+            bid(isStarted, timeout);
+          }}
         >
           Bid now
         </Button>
@@ -531,6 +553,8 @@ const Other = () => {
 };
 
 const AuctionDetail = () => {
+  const [loading, setLoading] = useState(false);
+  const [text, setText] = useState("");
   const { currAuction } = useSelector((state) => state.auction);
   const { nftList, marketplaceContract, isLoading } = useSelector(
     (state) => state.solidity
@@ -538,7 +562,7 @@ const AuctionDetail = () => {
   const { nft_id } = useParams();
 
   const nft = nftList.filter((nft) => nft.id == nft_id)[0];
-  let items=[]
+  let items = [];
   let date;
   let dateDisplay;
   let timeout = false;
@@ -550,19 +574,39 @@ const AuctionDetail = () => {
       img: `data:image/png;base64,${toBase64(
         currAuction.nft.image.buffer.data
       )}`,
-    });//2022-12-08 15:00:00
-    const endAt = new Date(nft.endAt*1000)
-    let tempDate = endAt.getDate() < 10 ? '0'+endAt.getDate() : endAt.getDate();
-    let tempHour = endAt.getHours() < 10 ? '0'+endAt.getHours() : endAt.getHours();
-    let tempMin = endAt.getMinutes() < 10 ? '0'+endAt.getMinutes() : endAt.getMinutes();
+    }); //2022-12-08 15:00:00
+    const endAt = new Date(nft.endAt * 1000);
+    let tempDate =
+      endAt.getDate() < 10 ? "0" + endAt.getDate() : endAt.getDate();
+    let tempHour =
+      endAt.getHours() < 10 ? "0" + endAt.getHours() : endAt.getHours();
+    let tempMin =
+      endAt.getMinutes() < 10 ? "0" + endAt.getMinutes() : endAt.getMinutes();
 
-    date=endAt.getFullYear()+'-'+Number(endAt.getMonth()+1)+'-'+tempDate+' '+tempHour+':'+tempMin+':00'
+    date =
+      endAt.getFullYear() +
+      "-" +
+      Number(endAt.getMonth() + 1) +
+      "-" +
+      tempDate +
+      " " +
+      tempHour +
+      ":" +
+      tempMin +
+      ":00";
 
-    dateDisplay=endAt.getDate()+ '/'+ Number(endAt.getMonth()+1)+ '/'+ endAt.getFullYear()+ ', ' + tempHour+':'+tempMin
-    if(endAt < Date.now()) timeout = true;
+    dateDisplay =
+      endAt.getDate() +
+      "/" +
+      Number(endAt.getMonth() + 1) +
+      "/" +
+      endAt.getFullYear() +
+      ", " +
+      tempHour +
+      ":" +
+      tempMin;
+    if (endAt < Date.now()) timeout = true;
   }
-
-
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -575,10 +619,11 @@ const AuctionDetail = () => {
         <CircularProgress />
       ) : (
         <>
+          {loading && <AlertLoading text={text} />}
           <AuctionDetailStyle>
             <Box className="leftBox">
               {/* slider */}
-              <ImgSlider items={items}/>
+              <ImgSlider items={items} />
 
               {/* description */}
               <CardDescription
@@ -587,11 +632,23 @@ const AuctionDetail = () => {
                 nftName={currAuction.nft.name}
               />
             </Box>
+
             <Box className="rightBox">
               <Header />
-              
+
               <HeaderTitle title={currAuction.title} />
-              <CampaignInfo marketplaceContract={marketplaceContract} nft_id={nft_id} highestBid={currAuction.nft.highestBid} startPrice={currAuction.nft.startPrice} date={date} dateDisplay={dateDisplay}  timeout={timeout} isStarted={nft.isStarted}/>
+              <CampaignInfo
+                marketplaceContract={marketplaceContract}
+                nft_id={nft_id}
+                highestBid={currAuction.nft.highestBid}
+                startPrice={currAuction.nft.startPrice}
+                date={date}
+                dateDisplay={dateDisplay}
+                timeout={timeout}
+                isStarted={nft.isStarted}
+                setLoading={setLoading}
+                setText ={setText }
+              />
               <BidHistory />
               <Other />
             </Box>
