@@ -1,4 +1,13 @@
-import { Box, Typography, Tabs, Tab, CircularProgress, Card, Button, Link } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+  CircularProgress,
+  Card,
+  Button,
+  Link,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { fromWei, account_admin } from "../utils";
@@ -180,10 +189,22 @@ const ItemAuction = ({ auc }) => {
   );
 };
 
-
 const columns = [
-  { field: "hash", headerName: "Hash code", width: 300,  renderCell: (params) => {
-    return <Link to={{pathname: etherscanHash(params.row.hash)}} target="_blank" style={linkStyle}>{params.row.hash}</Link>},
+  {
+    field: "hash",
+    headerName: "Hash code",
+    width: 300,
+    renderCell: (params) => {
+      return (
+        <Link
+          to={{ pathname: etherscanHash(params.row.hash) }}
+          target="_blank"
+          style={linkStyle}
+        >
+          {params.row.hash}
+        </Link>
+      );
+    },
   },
   { field: "type", headerName: "Type", width: 200 },
   {
@@ -192,11 +213,24 @@ const columns = [
     width: 200,
     renderCell: (params) => {
       const a = new Date(params.row.timestamp * 1000);
-      return <p>{a.toLocaleString()}</p>
+      return <p>{a.toLocaleString()}</p>;
     },
   },
-  { field: "to", headerName: "To", width: 250,  renderCell: (params) => {
-    return <Link to={{pathname: etherscanAcc(params.row.to)}} target="_blank" style={linkStyle}>{params.row.to}</Link>},
+  {
+    field: "to",
+    headerName: "To",
+    width: 250,
+    renderCell: (params) => {
+      return (
+        <Link
+          to={{ pathname: etherscanAcc(params.row.to) }}
+          target="_blank"
+          style={linkStyle}
+        >
+          {params.row.to}
+        </Link>
+      );
+    },
   },
   { field: "value", headerName: "Value", width: 200 },
   { field: "gasPrice", headerName: "Gas Price", width: 200 },
@@ -206,17 +240,19 @@ const Search = () => {
   const [value, setValue] = useState(0);
   const [trans, setTrans] = useState([]);
 
+  let isExitNFT = false;
+  let isExitAuc = false;
   const { nftList, account, isLoading, marketplaceContract, nftContract } =
     useSelector((state) => state.solidity);
-  const { auctions, isLoading: aucLoading } = useSelector((state) => state.auction);
+  const { auctions, isLoading: aucLoading } = useSelector(
+    (state) => state.auction
+  );
 
   const query = useQuery().get("value"); // localhost/?value=abc
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(trans);
-  console.log(auctions);
-  console.log(nftList);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -261,19 +297,20 @@ const Search = () => {
   }, [account]);
 
   return (
-    <Box>
-      <Typography variant="h3">Search Page</Typography>
+    <Box sx={{ mt: "50px", ml: "20px" }}>
+      <Typography variant="h4">Search Page</Typography>
       <Box>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Collections" {...a11yProps(0)} />
-          <Tab label="Auctions" {...a11yProps(1)} />
-          <Tab label="History" {...a11yProps(2)} />
+          {account && <Tab label="Collections" {...a11yProps(0)} />}
+          <Tab label="Auctions" {...a11yProps(account ? 1 : 0)} />
         </Tabs>
-        <TabPanel value={value} index={0}> {/*Collection */}
+        {account && <TabPanel value={value} index={0}>
+          {" "}
+          {/*Collection */}
           {isLoading ? (
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <Typography component={"span"}>
@@ -296,7 +333,8 @@ const Search = () => {
               ) : (
                 <>
                   {nftList.map((item, id) => {
-                    if (item.name.toLowerCase().includes(query.toLowerCase()))
+                    if (item.name.toLowerCase().includes(query.toLowerCase())) {
+                      isExitNFT = true;
                       return (
                         <MyNFTInfo
                           key={id}
@@ -308,46 +346,35 @@ const Search = () => {
                           marketplaceContract={marketplaceContract}
                           nftContract={nftContract}
                           account={account}
+                          isSearch={true}
                         />
                       );
+                    }
                   })}
+                  {!isExitNFT && <Typography variant="h5" sx={{color:'red', opacity: '0.8'}}>No NFT Found</Typography>}
                 </>
               )}
             </Box>
           )}
-        </TabPanel>
-        <TabPanel value={value} index={1}> {/*Auction */}
-        {aucLoading ? (
-          <CircularProgress />
-        ) : (
-          <StyledListAuction>
-            {auctions.map((auc, index) => {
-              if(auc.title.toLowerCase().includes(query.toLowerCase()))
-                return <ItemAuction key={index} auc={auc} />;
-            })}
-          </StyledListAuction>
-        )}
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-        <>
-      
-      <Box sx={{ height: "75vh", width: "100%", padding: "0 24px" }}>
-        {!trans?.length ? (
-          <CircularProgress />
-        ) : (
-          <DataGrid
-            headerHeight={40}
-            rowHeight={56}
-            rows={trans}
-            columns={columns}
-            getRowId={(row) => row.hash}
-            pageSize={8}
-            rowsPerPageOptions={[5]}
-            disableSelectionOnClick
-          />
-        )}
-      </Box>
-    </>
+        </TabPanel>}
+        <TabPanel value={value} index={account ? 1 : 0}>
+          {" "}
+          {/*Auction */}
+          {aucLoading ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <StyledListAuction>
+                {auctions.map((auc, index) => {
+                  if (auc.title.toLowerCase().includes(query.toLowerCase())) {
+                    isExitAuc = true;
+                    return (<ItemAuction key={index} auc={auc} />);
+                  }
+                })}
+              </StyledListAuction>
+              {!isExitAuc &&  <Typography variant="h5" sx={{color:'red', opacity: '0.8'}}>No Auction Found</Typography>}
+            </>
+          )}
         </TabPanel>
       </Box>
     </Box>

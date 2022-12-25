@@ -26,18 +26,18 @@ import Search from "./pages/Search";
 
 const App = () => {
   const dispatch = useDispatch();
-  const ac = useSelector(state=>state.solidity.account)
+  const ac = useSelector((state) => state.solidity.account);
   let accounts;
   const clearAccount = () => {
     dispatch({
       type: CONNECT_ACC,
       payload: {
-        account: '',
+        account: "",
       },
     });
-    localStorage.setItem('acc', '');
-    window.location.reload()
-  }
+    localStorage.setItem("acc", "");
+    window.location.reload();
+  };
 
   const web3Handler = async () => {
     // connect metamask
@@ -54,27 +54,34 @@ const App = () => {
     });
 
     window.ethereum.on("accountsChanged", clearAccount);
-    console.log(accounts)
+    console.log(accounts);
     dispatch({
       type: CONNECT_ACC,
       payload: {
         account: accounts[0],
       },
     });
-    localStorage.setItem('acc', accounts[0]);
+    localStorage.setItem("acc", accounts[0]);
+
     dispatch(fetchSolidity());
   };
 
   useEffect(() => {
     // web3Handler();
-    const acc = localStorage.getItem('acc');
+    window.addEventListener("beforeunload", (e) => {
+      if (window.event.clientY < 0) {
+        localStorage.removeItem("acc");
+      }
+    });
+
+    const acc = localStorage.getItem("acc");
     dispatch({
       type: CONNECT_ACC,
       payload: {
         account: acc,
       },
     });
-    
+
     dispatch(fetchSolidity());
   });
 
@@ -120,14 +127,36 @@ const App = () => {
                   component={() => <Redirect to="/" />}
                 />
                 <Route path="/" exact component={Home} />
-                <Route path="/create_nft" exact  component={() => {return !ac?  <Redirect to="/" /> : <Create_nft />}} />
-                <Route path="/history" exact  component={() => {return !ac?  <Redirect to="/" /> : <HistoryTransaction />}} />
-                <Route path="/auction/:nft_id" exact component={AuctionDetail} />
+                <Route
+                  path="/create_nft"
+                  exact
+                  component={() => {
+                    return !ac ? <Redirect to="/" /> : <Create_nft />;
+                  }}
+                />
+                <Route
+                  path="/history"
+                  exact
+                  component={() => {
+                    return !ac ? <Redirect to="/" /> : <HistoryTransaction />;
+                  }}
+                />
+                <Route
+                  path="/auction/:nft_id"
+                  exact
+                  component={AuctionDetail}
+                />
 
                 {/* <Route path="/auction" exact component={Auction} /> */}
-                <Route path="/account" exact component={() => {return !ac?  <Redirect to="/" /> : <Account />}} />
-                <Route path="/all-auction" exact component={AllAuction}  />
-                <Route path="/search" exact component={Search}  />
+                <Route
+                  path="/account"
+                  exact
+                  component={() => {
+                    return !ac ? <Redirect to="/" /> : <Account />;
+                  }}
+                />
+                <Route path="/all-auction" exact component={AllAuction} />
+                <Route path="/search" exact component={Search} />
                 <Route path="*" component={ErrorPages} />
               </Switch>
             </Box>

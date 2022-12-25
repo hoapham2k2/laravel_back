@@ -15,13 +15,14 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import AssessmentIcon from '@mui/icons-material/Assessment';
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { ColorModeContext, tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
 import { account_admin, toWei } from "../../utils";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 import {
   Button,
@@ -33,6 +34,7 @@ import {
 import EmoStyled from "@emotion/styled";
 
 import logoWeb from "../../assets/img/weshare.svg";
+import { useState } from "react";
 
 // styled search
 const Search = styled("div")(({ theme }) => ({
@@ -60,6 +62,19 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+}));
+
+const DeleteIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  right: "0",
+  top: "0",
+  position: "absolute",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  color: "gray",
 }));
 
 // style input base
@@ -95,7 +110,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
   const [price, setPrice] = React.useState(0);
   const [colorChange, setColorchange] = React.useState(false);
 
-  const location = useLocation()
+  const location = useLocation();
   const pathname = location.pathname.split("/")[1];
 
   const changeNavbarColor = () => {
@@ -105,9 +120,10 @@ export default function PrimarySearchAppBar({ web3Handler }) {
       setColorchange(false);
     }
   };
+
   window.addEventListener("scroll", changeNavbarColor);
 
-  const {account} = useSelector((state) => state.solidity);
+  const { account } = useSelector((state) => state.solidity);
 
   const history = useHistory();
 
@@ -127,39 +143,49 @@ export default function PrimarySearchAppBar({ web3Handler }) {
   //handle on donate
 
   const handleOnDonate = async () => {
-    if (!window.ethereum) return alert('Please install metamask first');
-    if(!account) alert('Please connect account');
-   
+    if (!window.ethereum) return alert("Please install metamask first");
+    if (!account) alert("Please connect account");
 
     const amount_eth = toWei(price);
 
     await window.ethereum.request({
-      method: 'eth_sendTransaction',
+      method: "eth_sendTransaction",
       params: [
         {
           from: account,
           to: account_admin,
-          gas: '0x5208',
+          gas: "0x5208",
           value: amount_eth._hex,
         },
       ],
     });
 
     alert("Thank you for your donation!");
-    if(pathname == 'history')
-      window.location.reload();
-
+    if (pathname == "history") window.location.reload();
   };
   const handleConnectWallet = () => {
     web3Handler();
   };
-  const [searchQuery, setSearchQuery] = React.useState('')
-  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [displayDelIcon, setDisplayDelIcon] = useState(false);
   const handleSearch = (e) => {
-    if(e.key == "Enter") {
-      history.push(`/search/?value=${searchQuery}`)
+    if (e.key == "Enter") {
+      setDisplayDelIcon(true)
+      history.push(`/search/?value=${searchQuery}`);
     }
+  };
+
+  const handleDeleteSearch = () => {
+    setSearchQuery("");
+    setDisplayDelIcon(false)
+    history.push("/");
+  };
+
+  const handleBlur = () => {
+    if(!searchQuery) setDisplayDelIcon(false)
+     else setDisplayDelIcon(true)
   }
+  
   return (
     <StyledAppBar
       color="transparent"
@@ -193,9 +219,17 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             placeholder="Search…"
             inputProps={{ "aria-label": "search" }}
             value={searchQuery}
-            onChange={(e)=>{setSearchQuery(e.target.value)}}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
             onKeyPress={handleSearch}
+            onBlur={handleBlur}
           />
+          {displayDelIcon && (
+            <DeleteIconWrapper onClick={handleDeleteSearch}>
+              <HighlightOffIcon />
+            </DeleteIconWrapper>
+          )}
         </Search>
 
         <Box
@@ -211,7 +245,9 @@ export default function PrimarySearchAppBar({ web3Handler }) {
             startIcon={<AssessmentIcon />}
             aria-describedby={id}
             variant="outlined"
-            onClick={()=>{history.push('/all-auction')}} 
+            onClick={() => {
+              history.push("/all-auction");
+            }}
           >
             Auctions
           </Button>
@@ -236,7 +272,7 @@ export default function PrimarySearchAppBar({ web3Handler }) {
               vertical: "top",
               horizontal: "center",
             }}
-            sx={{mt: '20px'}}
+            sx={{ mt: "20px" }}
           >
             <Box
               sx={{
@@ -284,14 +320,14 @@ export default function PrimarySearchAppBar({ web3Handler }) {
                 fullWidth
                 label="Amount"
                 variant="outlined"
-                type='number'
+                type="number"
                 min={0}
                 placeholder="0.00"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                  inputProps={{
-                    step: "0.001",
-                  }}
+                inputProps={{
+                  step: "0.001",
+                }}
               />
               <Typography variant="body1">
                 Please leave a message for us:

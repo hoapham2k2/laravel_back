@@ -114,6 +114,7 @@ export default function MyNFTInfo({
   marketplaceContract,
   nftContract,
   account,
+  isSearch
 }) {
   const [open, setOpen] = useState(false);
   const [desc, setDesc] = useState("");
@@ -175,16 +176,18 @@ export default function MyNFTInfo({
                 <Typography className="price">{price} ETH</Typography>
               </Box>
             </Box>
+            {!isSearch && 
             <Box height={30} className="hiddenButtonBox">
               <Button
                 className="cardButton"
                 variant="outlined"
                 fullWidth
                 onClick={handleClickOpen}
-              >
+                >
                 Donate this NFT
               </Button>
             </Box>
+              }
           </Box>
 
           {/* the dialog will appear when we click button donate */}

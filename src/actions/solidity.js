@@ -22,11 +22,11 @@ export const fetchSolidity = (accounts)  => async (dispatch) => {
   );
   const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer);
 
-  console.log("ntf contract: ", nft);
-  console.log("marketplace contract: ", marketplace);
+  // console.log("ntf contract: ", nft);
+  // console.log("marketplace contract: ", marketplace);
 
   const itemCount = await marketplace.itemCount();
-  // console.log(itemCount);
+  console.log(itemCount);
   let items = [];
   for (let i = 1; i <= itemCount; i++) {
     const item = await marketplace.items(i);
